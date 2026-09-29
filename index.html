@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>Cooks Crossing Annual Block Party & Pig Roast 2026</title>
   <meta name="description" content="Join us for the Cooks Crossing Annual Block Party on Saturday, October 3rd at 4:00 PM! Whole roasted pig by James Strickland, lawn games, and neighborhood potluck." />
   
@@ -82,32 +82,34 @@
 <body class="bg-stone-50 text-stone-800 font-sans antialiased selection:bg-amber-200 selection:text-amber-900 min-h-screen flex flex-col">
 
   <!-- ================= TOP ANNOUNCEMENT BANNER ================= -->
-  <div class="bg-gradient-to-r from-amber-600 via-amber-700 to-terracotta-700 text-white text-xs sm:text-sm font-medium py-2 px-4 shadow-sm text-center relative z-20">
-    <div class="max-w-7xl mx-auto flex items-center justify-center gap-2 flex-wrap">
-      <span class="inline-flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full font-semibold">
-        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Annual Neighborhood Tradition
+  <div class="bg-gradient-to-r from-amber-600 via-amber-700 to-terracotta-700 text-white text-[11px] sm:text-xs md:text-sm font-medium py-2 px-3 sm:px-4 shadow-sm text-center relative z-20">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap">
+      <span class="inline-flex items-center gap-1 bg-white/20 px-2 py-0.5 rounded-full font-bold">
+        <i data-lucide="sparkles" class="w-3 h-3"></i> Block Party 2026
       </span>
-      <span>Join us for the <strong>Cooks Crossing Block Party</strong> • Saturday, Oct 3, 2026 @ 4:00 PM!</span>
-      <a href="#dish-form-section" class="underline underline-offset-2 hover:text-amber-200 transition-colors font-semibold">Sign Up a Dish &rarr;</a>
+      <span><strong>Saturday, Oct 3 @ 4:00 PM</strong> • Pig Roast by James Strickland!</span>
+      <button onclick="mobileSwitchTab('form')" class="underline underline-offset-2 hover:text-amber-200 transition-colors font-bold ml-1">
+        Sign Up Dish &rarr;
+      </button>
     </div>
   </div>
 
   <!-- ================= NAVIGATION BAR ================= -->
   <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 transition-all duration-200 shadow-sm" id="navbar">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 md:h-20 flex items-center justify-between">
       
       <!-- Brand Logo / Title -->
-      <a href="#" class="flex items-center gap-3 group">
-        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-terracotta-600 flex items-center justify-center text-white shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform duration-200">
-          <i data-lucide="utensils" class="w-5 h-5 sm:w-6 sm:h-6"></i>
+      <a href="#" class="flex items-center gap-2.5 sm:gap-3 group">
+        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-amber-500 to-terracotta-600 flex items-center justify-center text-white shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform duration-200 shrink-0">
+          <i data-lucide="utensils" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </div>
         <div>
-          <span class="font-display font-extrabold text-lg sm:text-xl text-stone-900 tracking-tight leading-tight block">
+          <span class="font-display font-extrabold text-base sm:text-lg md:text-xl text-stone-900 tracking-tight leading-tight block">
             Cooks Crossing
           </span>
-          <span class="text-xs text-amber-700 font-semibold tracking-wide uppercase flex items-center gap-1">
+          <span class="text-[10px] sm:text-xs text-amber-700 font-bold tracking-wide uppercase flex items-center gap-1">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            Annual Block Party 2026
+            Block Party 2026
           </span>
         </div>
       </a>
@@ -115,7 +117,7 @@
       <!-- Desktop Nav Links -->
       <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-stone-600">
         <a href="#event-details" class="hover:text-amber-700 transition-colors">Event Info</a>
-        <a href="#dishes-section" class="hover:text-amber-700 transition-colors flex items-center gap-1.5">
+        <a href="#potluck-main" onclick="mobileSwitchTab('dishes')" class="hover:text-amber-700 transition-colors flex items-center gap-1.5">
           <span>Potluck Dishes</span>
           <span id="nav-dish-count-badge" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
         </a>
@@ -124,9 +126,9 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="flex items-center gap-2 sm:gap-3">
-        <button id="cloud-sync-modal-btn" type="button" title="Sync / Cloud Settings" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-all border border-stone-200">
-          <i data-lucide="cloud-check" id="sync-status-icon" class="w-4 h-4 text-emerald-600"></i>
+      <div class="flex items-center gap-2">
+        <button id="cloud-sync-modal-btn" type="button" title="Sync / Cloud Settings" class="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-all border border-stone-200">
+          <i data-lucide="cloud-check" id="sync-status-icon" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600"></i>
           <span class="hidden sm:inline" id="sync-status-label">Saved</span>
         </button>
 
@@ -135,262 +137,214 @@
           <span>Print</span>
         </button>
 
-        <a href="#dish-form-section" class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-600 to-terracotta-600 hover:from-amber-700 hover:to-terracotta-700 text-white font-bold text-xs sm:text-sm px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl shadow-md shadow-amber-600/25 hover:shadow-lg hover:shadow-amber-600/35 transition-all transform hover:-translate-y-0.5 active:translate-y-0">
-          <i data-lucide="plus-circle" class="w-4 h-4"></i>
-          <span>Add Your Dish</span>
-        </a>
+        <button onclick="mobileSwitchTab('form')" class="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-amber-600 to-terracotta-600 hover:from-amber-700 hover:to-terracotta-700 text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2.5 rounded-xl shadow-md shadow-amber-600/25 transition-all">
+          <i data-lucide="plus-circle" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+          <span>Add Dish</span>
+        </button>
       </div>
     </div>
   </nav>
 
-  <!-- ================= HERO SECTION WITH USER IMAGE ================= -->
+  <!-- ================= HERO SECTION (MOBILE PRIORITY) ================= -->
   <header class="relative bg-stone-900 text-white overflow-hidden hero-wrapper">
     <!-- Hero Background Image (Uploaded by user) -->
     <div class="absolute inset-0 z-0">
       <img 
         src="hero-bg.jpg" 
         alt="Cooks Crossing Neighborhood Field and Hot Air Balloon" 
-        class="w-full h-full object-cover object-center filter brightness-[0.70] contrast-[1.08] scale-[1.02] transform transition-transform duration-1000 ease-out"
+        class="w-full h-full object-cover filter brightness-[0.70] contrast-[1.08] scale-[1.02] transform transition-transform duration-1000 ease-out"
         id="hero-image"
       />
       <!-- Atmospheric Vignette & Color Gradients -->
-      <div class="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-900/60 to-black/75"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-900/65 to-black/80"></div>
       <div class="absolute inset-0 bg-gradient-to-r from-stone-950/80 via-transparent to-stone-950/70"></div>
       <div class="absolute inset-0 bg-emerald-950/20 mix-blend-multiply"></div>
     </div>
 
     <!-- Hero Content -->
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-20 pb-16 sm:pb-24">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-16 md:py-20 w-full">
       <div class="max-w-3xl">
         
         <!-- Neighborhood Badge -->
-        <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md border border-white/20 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-semibold text-amber-200 mb-5 shadow-lg">
-          <i data-lucide="home" class="w-4 h-4 text-amber-400"></i>
-          <span>Cooks Crossing Neighborhood Gathering</span>
+        <div class="inline-flex items-center gap-1.5 sm:gap-2 bg-white/15 backdrop-blur-md border border-white/20 px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold text-amber-200 mb-3 sm:mb-4 shadow-lg">
+          <i data-lucide="home" class="w-3.5 h-3.5 text-amber-400"></i>
+          <span>Cooks Crossing Community</span>
           <span class="text-white/40">•</span>
-          <span class="text-white font-medium">Corner of Wiembley & Brentford</span>
+          <span class="text-white font-medium">Julie Byers' Field</span>
         </div>
 
         <!-- Main Headline -->
-        <h1 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.1] mb-5 drop-shadow-md">
-          Cooks Crossing <br class="hidden sm:inline"/>
+        <h1 class="font-display font-extrabold text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight leading-[1.12] mb-3 sm:mb-4 drop-shadow-md">
+          Cooks Crossing <br/>
           <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-terracotta-400">
             Annual Block Party
           </span> & Pig Roast
         </h1>
 
         <!-- Subheadline / Pig Roast Highlight -->
-        <p class="text-base sm:text-xl text-stone-200 font-normal leading-relaxed mb-8 max-w-2xl text-shadow-sm">
-          Join your neighbors for an unforgettable autumn afternoon! <strong class="text-white font-semibold">James Strickland</strong> is cooking a whole pig for everyone, we'll have competitive cornhole and volleyball games, and our community potluck buffet!
+        <p class="text-xs sm:text-base md:text-lg text-stone-200 font-normal leading-relaxed mb-5 max-w-2xl text-shadow-sm">
+          <strong class="text-white font-semibold">James Strickland</strong> is roasting a whole pig for everyone! Join your neighbors for cornhole, volleyball, and our community side dish potluck!
         </p>
 
-        <!-- Quick Event Info Pills -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
-          <div class="bg-black/40 backdrop-blur-md border border-white/15 rounded-2xl p-3.5 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-400/30 flex items-center justify-center text-amber-300 shrink-0">
-              <i data-lucide="calendar" class="w-5 h-5"></i>
+        <!-- Quick Event Info Badges (Mobile friendly grid) -->
+        <div class="grid grid-cols-3 gap-2 sm:gap-3 mb-5">
+          <div class="bg-black/50 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2 sm:p-3 text-center sm:text-left flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5">
+            <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-amber-500/25 border border-amber-400/30 flex items-center justify-center text-amber-300 shrink-0">
+              <i data-lucide="calendar" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
             </div>
             <div>
-              <p class="text-[11px] uppercase tracking-wider text-stone-400 font-bold">When</p>
-              <p class="text-sm font-bold text-white">Sat, Oct 3, 2026</p>
-              <p class="text-xs text-amber-300 font-medium">4:00 PM Start</p>
+              <p class="text-[9px] sm:text-[10px] uppercase tracking-wider text-stone-400 font-bold">When</p>
+              <p class="text-xs sm:text-sm font-bold text-white">Sat, Oct 3</p>
+              <p class="text-[10px] text-amber-300 font-medium hidden sm:block">4:00 PM</p>
             </div>
           </div>
 
-          <div class="bg-black/40 backdrop-blur-md border border-white/15 rounded-2xl p-3.5 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 shrink-0">
-              <i data-lucide="map-pin" class="w-5 h-5"></i>
+          <div class="bg-black/50 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2 sm:p-3 text-center sm:text-left flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5">
+            <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-emerald-500/25 border border-emerald-400/30 flex items-center justify-center text-emerald-300 shrink-0">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
             </div>
             <div>
-              <p class="text-[11px] uppercase tracking-wider text-stone-400 font-bold">Where</p>
-              <p class="text-sm font-bold text-white">Julie Byers' Field</p>
-              <p class="text-xs text-stone-300">Wiembley & Brentford</p>
+              <p class="text-[9px] sm:text-[10px] uppercase tracking-wider text-stone-400 font-bold">Where</p>
+              <p class="text-xs sm:text-sm font-bold text-white truncate max-w-[85px] sm:max-w-none">Julie Byers</p>
+              <p class="text-[10px] text-stone-300 hidden sm:block">Wiembley & Brentford</p>
             </div>
           </div>
 
-          <div class="bg-black/40 backdrop-blur-md border border-white/15 rounded-2xl p-3.5 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-terracotta-500/20 border border-terracotta-400/30 flex items-center justify-center text-terracotta-300 shrink-0">
-              <i data-lucide="flame" class="w-5 h-5"></i>
+          <div class="bg-black/50 backdrop-blur-md border border-white/15 rounded-xl sm:rounded-2xl p-2 sm:p-3 text-center sm:text-left flex flex-col sm:flex-row items-center gap-1.5 sm:gap-2.5">
+            <div class="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-terracotta-500/25 border border-terracotta-400/30 flex items-center justify-center text-terracotta-300 shrink-0">
+              <i data-lucide="flame" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
             </div>
             <div>
-              <p class="text-[11px] uppercase tracking-wider text-stone-400 font-bold">Main Feast</p>
-              <p class="text-sm font-bold text-white">Whole Roasted Pig</p>
-              <p class="text-xs text-stone-300">By James Strickland</p>
+              <p class="text-[9px] sm:text-[10px] uppercase tracking-wider text-stone-400 font-bold">Feast</p>
+              <p class="text-xs sm:text-sm font-bold text-white">Pig Roast</p>
+              <p class="text-[10px] text-stone-300 hidden sm:block">By James S.</p>
             </div>
           </div>
         </div>
 
-        <!-- Call to Action Buttons -->
-        <div class="flex flex-wrap items-center gap-4">
-          <a href="#dish-form-section" class="inline-flex items-center gap-2.5 bg-gradient-to-r from-amber-500 to-terracotta-600 hover:from-amber-600 hover:to-terracotta-700 text-white font-extrabold text-sm sm:text-base px-6 py-3.5 rounded-2xl shadow-xl shadow-amber-600/30 hover:shadow-amber-600/40 transition-all transform hover:-translate-y-0.5 active:translate-y-0">
-            <i data-lucide="plus-circle" class="w-5 h-5"></i>
-            <span>I'm Bringing a Side Dish!</span>
-          </a>
+        <!-- Mobile-First Countdown Banner -->
+        <div class="bg-black/55 backdrop-blur-xl border border-white/20 rounded-2xl p-3 sm:p-4 mb-6 shadow-xl max-w-lg">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+              Countdown to Party Time
+            </span>
+            <span class="text-[10px] text-stone-300">Oct 3 @ 4:00 PM</span>
+          </div>
 
-          <a href="#dishes-section" class="inline-flex items-center gap-2.5 bg-white/15 hover:bg-white/25 backdrop-blur-md text-white border border-white/20 font-bold text-sm sm:text-base px-6 py-3.5 rounded-2xl transition-all">
-            <i data-lucide="eye" class="w-5 h-5 text-amber-300"></i>
+          <div class="grid grid-cols-4 gap-1.5 sm:gap-2 text-center" id="countdown-timer">
+            <div class="bg-white/10 rounded-lg sm:rounded-xl py-1.5 px-1 border border-white/10">
+              <div class="font-display font-extrabold text-base sm:text-2xl text-white" id="count-days">00</div>
+              <div class="text-[9px] uppercase font-semibold text-stone-400">Days</div>
+            </div>
+            <div class="bg-white/10 rounded-lg sm:rounded-xl py-1.5 px-1 border border-white/10">
+              <div class="font-display font-extrabold text-base sm:text-2xl text-white" id="count-hours">00</div>
+              <div class="text-[9px] uppercase font-semibold text-stone-400">Hours</div>
+            </div>
+            <div class="bg-white/10 rounded-lg sm:rounded-xl py-1.5 px-1 border border-white/10">
+              <div class="font-display font-extrabold text-base sm:text-2xl text-white" id="count-mins">00</div>
+              <div class="text-[9px] uppercase font-semibold text-stone-400">Mins</div>
+            </div>
+            <div class="bg-white/10 rounded-lg sm:rounded-xl py-1.5 px-1 border border-white/10">
+              <div class="font-display font-extrabold text-base sm:text-2xl text-white" id="count-secs">00</div>
+              <div class="text-[9px] uppercase font-semibold text-stone-400">Secs</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Primary Action Buttons (Thumb friendly) -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-4">
+          <button 
+            type="button" 
+            onclick="mobileSwitchTab('dishes')"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-terracotta-600 hover:from-amber-600 hover:to-terracotta-700 text-white font-extrabold text-sm sm:text-base py-3 px-6 rounded-2xl shadow-xl shadow-amber-600/35 transition-all transform active:scale-[0.98]"
+          >
+            <i data-lucide="eye" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-200"></i>
             <span>See What Others Added</span>
-            <span id="hero-dish-count-tag" class="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full font-bold">0 dishes</span>
-          </a>
+            <span id="hero-dish-count-tag" class="bg-black/25 text-white text-xs px-2 py-0.5 rounded-full font-bold ml-1">0 dishes</span>
+          </button>
+
+          <button 
+            type="button" 
+            onclick="mobileSwitchTab('form')"
+            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/25 font-bold text-sm sm:text-base py-3 px-6 rounded-2xl transition-all active:scale-[0.98]"
+          >
+            <i data-lucide="plus-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-300"></i>
+            <span>I'm Bringing a Side Dish!</span>
+          </button>
         </div>
 
       </div>
-
-      <!-- Floating Countdown Card (Desktop Right) -->
-      <div class="mt-8 lg:mt-0 lg:absolute lg:right-8 lg:bottom-12 max-w-sm w-full bg-black/60 backdrop-blur-xl border border-white/20 rounded-3xl p-5 shadow-2xl">
-        <div class="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
-          <div class="flex items-center gap-2">
-            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>
-            <span class="text-xs font-bold uppercase tracking-wider text-amber-300">Party Countdown</span>
-          </div>
-          <span class="text-xs text-stone-300">Saturday, Oct 3</span>
-        </div>
-        
-        <div class="grid grid-cols-4 gap-2 text-center" id="countdown-timer">
-          <div class="bg-white/10 rounded-xl p-2 border border-white/10">
-            <div class="font-display font-extrabold text-xl sm:text-2xl text-white" id="count-days">00</div>
-            <div class="text-[10px] uppercase font-semibold text-stone-400 tracking-wider">Days</div>
-          </div>
-          <div class="bg-white/10 rounded-xl p-2 border border-white/10">
-            <div class="font-display font-extrabold text-xl sm:text-2xl text-white" id="count-hours">00</div>
-            <div class="text-[10px] uppercase font-semibold text-stone-400 tracking-wider">Hours</div>
-          </div>
-          <div class="bg-white/10 rounded-xl p-2 border border-white/10">
-            <div class="font-display font-extrabold text-xl sm:text-2xl text-white" id="count-mins">00</div>
-            <div class="text-[10px] uppercase font-semibold text-stone-400 tracking-wider">Mins</div>
-          </div>
-          <div class="bg-white/10 rounded-xl p-2 border border-white/10">
-            <div class="font-display font-extrabold text-xl sm:text-2xl text-white" id="count-secs">00</div>
-            <div class="text-[10px] uppercase font-semibold text-stone-400 tracking-wider">Secs</div>
-          </div>
-        </div>
-
-        <p class="text-xs text-stone-300 text-center mt-3 flex items-center justify-center gap-1.5">
-          <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-400"></i>
-          <span>Pig carved & served starting at 5:00 PM</span>
-        </p>
-      </div>
-
     </div>
   </header>
 
-  <!-- ================= HIGHLIGHTS & KEY DETAILS ================= -->
-  <section id="event-details" class="py-12 bg-white border-b border-stone-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="text-center max-w-2xl mx-auto mb-10">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-amber-700 mb-2">Block Party Lineup</h2>
-        <h3 class="font-display text-2xl sm:text-3xl font-extrabold text-stone-900">What Makes Cooks Crossing Great</h3>
-        <p class="text-sm sm:text-base text-stone-600 mt-2">Bring your family, your lawn chairs, and an appetite. Here's what's lined up for the afternoon:</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <!-- Card 1: James Strickland Pig Roast -->
-        <div class="bg-gradient-to-b from-amber-50/60 to-white border border-amber-200/80 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-          <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold text-xl mb-4 shadow-md shadow-amber-500/20 group-hover:scale-110 transition-transform">
-            🍖
-          </div>
-          <div class="inline-block bg-amber-100 text-amber-900 text-xs font-bold px-2.5 py-0.5 rounded-full mb-2">
-            Main Course Provided
-          </div>
-          <h4 class="font-display font-bold text-xl text-stone-900 mb-2">James Strickland's Pig Roast</h4>
-          <p class="text-sm text-stone-600 leading-relaxed">
-            James is firing up the smoker early Saturday morning to cook a tender, juicy whole roasted pig for the entire neighborhood! Pulled pork, buns, and barbecue sauces will be ready at 5:00 PM.
-          </p>
-          <div class="mt-4 pt-4 border-t border-amber-100 flex items-center gap-2 text-xs font-semibold text-amber-800">
-            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
-            <span>Free for all Cooks Crossing residents</span>
-          </div>
-        </div>
-
-        <!-- Card 2: Games (Cornhole & Volleyball) -->
-        <div class="bg-gradient-to-b from-emerald-50/60 to-white border border-emerald-200/80 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xl mb-4 shadow-md shadow-emerald-600/20 group-hover:scale-110 transition-transform">
-            🎯
-          </div>
-          <div class="inline-block bg-emerald-100 text-emerald-900 text-xs font-bold px-2.5 py-0.5 rounded-full mb-2">
-            Fun & Friendly Competition
-          </div>
-          <h4 class="font-display font-bold text-xl text-stone-900 mb-2">Cornhole & Volleyball</h4>
-          <p class="text-sm text-stone-600 leading-relaxed">
-            Games will be set up across the field for all ages. Join the casual cornhole tournament or jump into the grass volleyball games! Feel free to bring frisbees, ladder toss, or spikeball too.
-          </p>
-          <div class="mt-4 pt-4 border-t border-emerald-100 flex items-center gap-2 text-xs font-semibold text-emerald-800">
-            <a href="#games-section" class="hover:underline flex items-center gap-1 font-bold">
-              <span>Sign up for Cornhole tournament</span>
-              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 3: Potluck Side Dishes -->
-        <div class="bg-gradient-to-b from-terracotta-50/60 to-white border border-terracotta-200/80 rounded-3xl p-6 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
-          <div class="w-12 h-12 rounded-2xl bg-terracotta-600 text-white flex items-center justify-center font-bold text-xl mb-4 shadow-md shadow-terracotta-600/20 group-hover:scale-110 transition-transform">
-            🥗
-          </div>
-          <div class="inline-block bg-terracotta-100 text-terracotta-900 text-xs font-bold px-2.5 py-0.5 rounded-full mb-2">
-            Bring a Dish to Share
-          </div>
-          <h4 class="font-display font-bold text-xl text-stone-900 mb-2">Community Potluck Sides</h4>
-          <p class="text-sm text-stone-600 leading-relaxed">
-            Every family is asked to bring their favorite side dish, salad, baked mac & cheese, cornbread, appetizer, or sweet dessert. Sign up below so we avoid having 15 bowls of potato salad!
-          </p>
-          <div class="mt-4 pt-4 border-t border-terracotta-100 flex items-center gap-2 text-xs font-semibold text-terracotta-800">
-            <a href="#dish-form-section" class="hover:underline flex items-center gap-1 font-bold">
-              <span>Enter your dish below</span>
-              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-            </a>
-          </div>
-        </div>
-
-      </div>
-
+  <!-- ================= MOBILE VIEW TOGGLE / SEGMENTED CONTROL ================= -->
+  <!-- Appears prominently on mobile to instantly toggle between "What Neighbors Added" and "Add Dish" -->
+  <div class="lg:hidden sticky top-14 sm:top-16 z-30 bg-stone-100/95 backdrop-blur-md border-b border-stone-200 py-2.5 px-3" id="mobile-view-toggle">
+    <div class="max-w-md mx-auto bg-stone-200/80 p-1 rounded-2xl flex items-center shadow-inner">
+      <button 
+        type="button" 
+        id="tab-btn-dishes" 
+        onclick="mobileSwitchTab('dishes')"
+        class="segmented-btn active flex-1 py-2 px-3 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition-all"
+      >
+        <span>🥗 What's Added</span>
+        <span id="mobile-tab-count-badge" class="bg-amber-100 text-amber-900 text-[10px] px-1.5 py-0.2 rounded-full font-extrabold">0</span>
+      </button>
+      <button 
+        type="button" 
+        id="tab-btn-form" 
+        onclick="mobileSwitchTab('form')"
+        class="segmented-btn flex-1 py-2 px-3 rounded-xl text-xs font-bold text-stone-600 text-center flex items-center justify-center gap-1.5 transition-all"
+      >
+        <i data-lucide="plus" class="w-3.5 h-3.5 text-amber-600"></i>
+        <span>Add My Dish</span>
+      </button>
     </div>
-  </section>
+  </div>
 
   <!-- ================= POTLUCK STATS SUMMARY ================= -->
-  <section class="bg-stone-100/80 border-b border-stone-200/80 py-6">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+  <section class="bg-white border-b border-stone-200/80 py-4 sm:py-6">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4">
         
-        <div class="bg-white rounded-2xl p-4 border border-stone-200 shadow-sm flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
-            <i data-lucide="utensils-crossed" class="w-5 h-5"></i>
+        <div class="bg-stone-50 rounded-2xl p-3 sm:p-4 border border-stone-200/80 shadow-xs flex items-center gap-2.5 sm:gap-3">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+            <i data-lucide="utensils-crossed" class="w-4 h-4 sm:w-5 sm:h-5"></i>
           </div>
           <div>
-            <p class="text-xs text-stone-500 font-semibold uppercase">Total Dishes</p>
-            <p class="text-xl sm:text-2xl font-display font-extrabold text-stone-900" id="stat-total-dishes">0</p>
+            <p class="text-[10px] sm:text-xs text-stone-500 font-semibold uppercase">Total Dishes</p>
+            <p class="text-lg sm:text-2xl font-display font-extrabold text-stone-900" id="stat-total-dishes">0</p>
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl p-4 border border-stone-200 shadow-sm flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
-            <i data-lucide="users" class="w-5 h-5"></i>
+        <div class="bg-stone-50 rounded-2xl p-3 sm:p-4 border border-stone-200/80 shadow-xs flex items-center gap-2.5 sm:gap-3">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+            <i data-lucide="users" class="w-4 h-4 sm:w-5 sm:h-5"></i>
           </div>
           <div>
-            <p class="text-xs text-stone-500 font-semibold uppercase">Est. Servings</p>
-            <p class="text-xl sm:text-2xl font-display font-extrabold text-stone-900" id="stat-total-servings">0</p>
+            <p class="text-[10px] sm:text-xs text-stone-500 font-semibold uppercase">Est. Servings</p>
+            <p class="text-lg sm:text-2xl font-display font-extrabold text-stone-900" id="stat-total-servings">0</p>
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl p-4 border border-stone-200 shadow-sm flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center">
-            <i data-lucide="leaf" class="w-5 h-5"></i>
+        <div class="bg-stone-50 rounded-2xl p-3 sm:p-4 border border-stone-200/80 shadow-xs flex items-center gap-2.5 sm:gap-3">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+            <i data-lucide="leaf" class="w-4 h-4 sm:w-5 sm:h-5"></i>
           </div>
           <div>
-            <p class="text-xs text-stone-500 font-semibold uppercase">Vegetarian / GF</p>
-            <p class="text-xl sm:text-2xl font-display font-extrabold text-stone-900" id="stat-dietary-dishes">0</p>
+            <p class="text-[10px] sm:text-xs text-stone-500 font-semibold uppercase">Veg / GF</p>
+            <p class="text-lg sm:text-2xl font-display font-extrabold text-stone-900" id="stat-dietary-dishes">0</p>
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl p-4 border border-stone-200 shadow-sm flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center">
-            <i data-lucide="trophy" class="w-5 h-5"></i>
+        <div class="bg-stone-50 rounded-2xl p-3 sm:p-4 border border-stone-200/80 shadow-xs flex items-center gap-2.5 sm:gap-3">
+          <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
+            <i data-lucide="trophy" class="w-4 h-4 sm:w-5 sm:h-5"></i>
           </div>
           <div>
-            <p class="text-xs text-stone-500 font-semibold uppercase">Games Players</p>
-            <p class="text-xl sm:text-2xl font-display font-extrabold text-stone-900" id="stat-total-players">0</p>
+            <p class="text-[10px] sm:text-xs text-stone-500 font-semibold uppercase">Players</p>
+            <p class="text-lg sm:text-2xl font-display font-extrabold text-stone-900" id="stat-total-players">0</p>
           </div>
         </div>
 
@@ -399,14 +353,15 @@
   </section>
 
   <!-- ================= MAIN POTLUCK SECTION: VIEW & SIGN UP ================= -->
-  <main class="py-12 bg-stone-50 flex-grow" id="potluck-main">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <main class="py-6 sm:py-12 bg-stone-50 flex-grow" id="potluck-main">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
       
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
         
-        <!-- LEFT COLUMN: SIDE DISH SIGNUP FORM (Sticky on desktop) -->
-        <div class="lg:col-span-5 lg:sticky lg:top-24" id="dish-form-section">
-          <div class="bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-lg shadow-stone-200/50 relative overflow-hidden">
+        <!-- SIDE DISH SIGNUP FORM COLUMN -->
+        <!-- On desktop: Left column. On mobile: Shown when 'Add My Dish' tab is active -->
+        <div class="lg:col-span-5 lg:sticky lg:top-24 hidden lg:block" id="dish-form-section">
+          <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-8 border border-stone-200 shadow-md shadow-stone-200/50 relative overflow-hidden">
             
             <div class="flex items-center justify-between mb-4 pb-3 border-b border-stone-100">
               <div class="flex items-center gap-2.5">
@@ -414,12 +369,12 @@
                   <i data-lucide="plus" class="w-5 h-5"></i>
                 </div>
                 <div>
-                  <h3 class="font-display font-extrabold text-xl text-stone-900">Add Your Side Dish</h3>
+                  <h3 class="font-display font-extrabold text-lg sm:text-xl text-stone-900">Add Your Side Dish</h3>
                   <p class="text-xs text-stone-500">Sign up what you'll bring to share</p>
                 </div>
               </div>
               <span class="text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200/60 px-2 py-1 rounded-lg">
-                Cooks Crossing Potluck
+                Potluck 2026
               </span>
             </div>
 
@@ -441,7 +396,7 @@
                     name="contributorName"
                     required 
                     placeholder="e.g. The Miller Family or Dave & Sarah" 
-                    class="w-full pl-10 pr-4 py-2.5 text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all placeholder:text-stone-400"
+                    class="w-full pl-10 pr-4 py-3 text-base sm:text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all placeholder:text-stone-400"
                   />
                 </div>
               </div>
@@ -460,7 +415,7 @@
                     id="contributor-street" 
                     name="contributorStreet"
                     placeholder="e.g. 114 Wiembley, or Brentford Ct" 
-                    class="w-full pl-10 pr-4 py-2.5 text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all placeholder:text-stone-400"
+                    class="w-full pl-10 pr-4 py-3 text-base sm:text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all placeholder:text-stone-400"
                   />
                 </div>
               </div>
@@ -480,7 +435,7 @@
                     name="dishName"
                     required 
                     placeholder="e.g. Creamy Potato Salad, Homemade Apple Crisp" 
-                    class="w-full pl-10 pr-4 py-2.5 text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all placeholder:text-stone-400"
+                    class="w-full pl-10 pr-4 py-3 text-base sm:text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all placeholder:text-stone-400"
                   />
                 </div>
               </div>
@@ -497,7 +452,7 @@
                     id="dish-category" 
                     name="dishCategory"
                     required
-                    class="w-full px-3 py-2.5 text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all font-medium text-stone-800"
+                    class="w-full px-3 py-3 text-base sm:text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all font-medium text-stone-800"
                   >
                     <option value="salads">🥗 Salads & Slaws</option>
                     <option value="warm-sides">🍲 Warm Sides & Casseroles</option>
@@ -518,7 +473,7 @@
                   <select 
                     id="dish-servings" 
                     name="dishServings"
-                    class="w-full px-3 py-2.5 text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-stone-800"
+                    class="w-full px-3 py-3 text-base sm:text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-stone-800"
                   >
                     <option value="8-10">Feeds 8 – 10</option>
                     <option value="12-15" selected>Feeds 12 – 15</option>
@@ -529,35 +484,35 @@
 
               </div>
 
-              <!-- Dietary Tags (Checkboxes) -->
+              <!-- Dietary Tags (Touch-friendly Checkbox Cards) -->
               <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1.5">
-                  Dietary & Allergen Notes
+                  Dietary & Serving Notes
                 </label>
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                  <label class="cursor-pointer flex items-center gap-1.5 text-xs text-stone-700 bg-stone-50 hover:bg-stone-100 p-2 rounded-lg border border-stone-200 select-none">
-                    <input type="checkbox" name="dietary" value="Vegetarian" class="rounded text-amber-600 focus:ring-amber-500">
+                  <label class="cursor-pointer flex items-center gap-2 text-xs font-medium text-stone-700 bg-stone-50 hover:bg-stone-100 p-2.5 rounded-xl border border-stone-200 select-none active:scale-[0.98] transition-transform">
+                    <input type="checkbox" name="dietary" value="Vegetarian" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500">
                     <span>🌱 Vegetarian</span>
                   </label>
-                  <label class="cursor-pointer flex items-center gap-1.5 text-xs text-stone-700 bg-stone-50 hover:bg-stone-100 p-2 rounded-lg border border-stone-200 select-none">
-                    <input type="checkbox" name="dietary" value="Gluten-Free" class="rounded text-amber-600 focus:ring-amber-500">
+                  <label class="cursor-pointer flex items-center gap-2 text-xs font-medium text-stone-700 bg-stone-50 hover:bg-stone-100 p-2.5 rounded-xl border border-stone-200 select-none active:scale-[0.98] transition-transform">
+                    <input type="checkbox" name="dietary" value="Gluten-Free" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500">
                     <span>🌾 Gluten-Free</span>
                   </label>
-                  <label class="cursor-pointer flex items-center gap-1.5 text-xs text-stone-700 bg-stone-50 hover:bg-stone-100 p-2 rounded-lg border border-stone-200 select-none">
-                    <input type="checkbox" name="dietary" value="Dairy-Free" class="rounded text-amber-600 focus:ring-amber-500">
+                  <label class="cursor-pointer flex items-center gap-2 text-xs font-medium text-stone-700 bg-stone-50 hover:bg-stone-100 p-2.5 rounded-xl border border-stone-200 select-none active:scale-[0.98] transition-transform">
+                    <input type="checkbox" name="dietary" value="Dairy-Free" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500">
                     <span>🥛 Dairy-Free</span>
                   </label>
-                  <label class="cursor-pointer flex items-center gap-1.5 text-xs text-stone-700 bg-stone-50 hover:bg-stone-100 p-2 rounded-lg border border-stone-200 select-none">
-                    <input type="checkbox" name="dietary" value="Nut-Free" class="rounded text-amber-600 focus:ring-amber-500">
+                  <label class="cursor-pointer flex items-center gap-2 text-xs font-medium text-stone-700 bg-stone-50 hover:bg-stone-100 p-2.5 rounded-xl border border-stone-200 select-none active:scale-[0.98] transition-transform">
+                    <input type="checkbox" name="dietary" value="Nut-Free" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500">
                     <span>🥜 Nut-Free</span>
                   </label>
-                  <label class="cursor-pointer flex items-center gap-1.5 text-xs text-stone-700 bg-stone-50 hover:bg-stone-100 p-2 rounded-lg border border-stone-200 select-none">
-                    <input type="checkbox" name="dietary" value="Vegan" class="rounded text-amber-600 focus:ring-amber-500">
+                  <label class="cursor-pointer flex items-center gap-2 text-xs font-medium text-stone-700 bg-stone-50 hover:bg-stone-100 p-2.5 rounded-xl border border-stone-200 select-none active:scale-[0.98] transition-transform">
+                    <input type="checkbox" name="dietary" value="Vegan" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500">
                     <span>🥬 Vegan</span>
                   </label>
-                  <label class="cursor-pointer flex items-center gap-1.5 text-xs text-stone-700 bg-stone-50 hover:bg-stone-100 p-2 rounded-lg border border-stone-200 select-none">
-                    <input type="checkbox" name="dietary" value="Needs Outlet" class="rounded text-amber-600 focus:ring-amber-500">
-                    <span>🔌 Crockpot / Warm</span>
+                  <label class="cursor-pointer flex items-center gap-2 text-xs font-medium text-stone-700 bg-stone-50 hover:bg-stone-100 p-2.5 rounded-xl border border-stone-200 select-none active:scale-[0.98] transition-transform">
+                    <input type="checkbox" name="dietary" value="Needs Outlet" class="w-4 h-4 rounded text-amber-600 focus:ring-amber-500">
+                    <span>🔌 Crockpot</span>
                   </label>
                 </div>
               </div>
@@ -572,15 +527,15 @@
                   name="dishNotes"
                   rows="2"
                   placeholder="e.g. Needs power outlet for slow cooker, or contains spicy jalapeños, utensils included."
-                  class="w-full px-3 py-2 text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all placeholder:text-stone-400 resize-none"
+                  class="w-full px-3 py-2.5 text-base sm:text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all placeholder:text-stone-400 resize-none"
                 ></textarea>
               </div>
 
-              <!-- Submit Button -->
+              <!-- Submit Button (Large touch target) -->
               <button 
                 type="submit" 
                 id="submit-dish-btn"
-                class="w-full py-3 px-6 rounded-xl font-display font-bold text-white bg-gradient-to-r from-amber-600 via-amber-700 to-terracotta-600 hover:from-amber-700 hover:via-amber-800 hover:to-terracotta-700 shadow-md shadow-amber-600/30 hover:shadow-lg transition-all flex items-center justify-center gap-2 transform active:scale-[0.99]"
+                class="w-full py-3.5 px-6 rounded-xl font-display font-bold text-base text-white bg-gradient-to-r from-amber-600 via-amber-700 to-terracotta-600 hover:from-amber-700 hover:via-amber-800 hover:to-terracotta-700 shadow-md shadow-amber-600/30 hover:shadow-lg transition-all flex items-center justify-center gap-2 transform active:scale-[0.98]"
               >
                 <i data-lucide="check" class="w-5 h-5"></i>
                 <span>Add Dish to the Table</span>
@@ -594,24 +549,25 @@
           </div>
         </div>
 
-        <!-- RIGHT COLUMN: WHAT OTHERS HAVE ADDED (The Potluck Table) -->
-        <div class="lg:col-span-7" id="dishes-section">
+        <!-- WHAT OTHERS HAVE ADDED COLUMN (The Potluck Table) -->
+        <!-- On desktop: Right column. On mobile: Shown when 'What's Added' tab is active -->
+        <div class="lg:col-span-7 block" id="dishes-section">
           
           <!-- Section Header & Controls -->
-          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-stone-200 shadow-sm mb-6">
+          <div class="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-stone-200 shadow-sm mb-4 sm:mb-6">
             
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 sm:mb-4">
               <div>
                 <div class="flex items-center gap-2">
                   <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                  <h3 class="font-display font-extrabold text-2xl text-stone-900">What Others Have Added</h3>
+                  <h3 class="font-display font-extrabold text-xl sm:text-2xl text-stone-900">What Others Have Added</h3>
                 </div>
                 <p class="text-xs sm:text-sm text-stone-500 mt-0.5">
                   See what your neighbors are bringing to avoid duplicate dishes!
                 </p>
               </div>
 
-              <!-- Quick Search -->
+              <!-- Quick Search (Full width on mobile) -->
               <div class="relative w-full sm:w-64">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-stone-400">
                   <i data-lucide="search" class="w-4 h-4"></i>
@@ -620,60 +576,60 @@
                   type="text" 
                   id="search-dishes-input" 
                   placeholder="Search dishes or neighbors..." 
-                  class="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
+                  class="w-full pl-9 pr-8 py-2.5 text-base sm:text-sm bg-stone-50 border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none"
                 />
-                <button id="clear-search-btn" class="hidden absolute inset-y-0 right-0 pr-2.5 flex items-center text-stone-400 hover:text-stone-600">
-                  <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                <button id="clear-search-btn" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-stone-400 hover:text-stone-600">
+                  <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
               </div>
             </div>
 
-            <!-- Category Filter Tabs -->
-            <div class="flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none text-xs font-semibold" id="category-filter-pills">
-              <button data-filter="all" class="category-pill active whitespace-nowrap px-3 py-1.5 rounded-xl bg-amber-600 text-white shadow-sm">
+            <!-- Category Filter Tabs (Horizontal touch scrolling on mobile) -->
+            <div class="flex items-center gap-1.5 overflow-x-auto pb-2 -mx-1 px-1 no-scrollbar text-xs font-semibold" id="category-filter-pills">
+              <button data-filter="all" class="category-pill active whitespace-nowrap px-3 py-2 rounded-xl bg-amber-600 text-white shadow-sm shrink-0">
                 All Dishes (<span id="filter-count-all">0</span>)
               </button>
-              <button data-filter="salads" class="category-pill whitespace-nowrap px-3 py-1.5 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">
+              <button data-filter="salads" class="category-pill whitespace-nowrap px-3 py-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 shrink-0">
                 🥗 Salads & Slaws (<span id="filter-count-salads">0</span>)
               </button>
-              <button data-filter="warm-sides" class="category-pill whitespace-nowrap px-3 py-1.5 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">
+              <button data-filter="warm-sides" class="category-pill whitespace-nowrap px-3 py-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 shrink-0">
                 🍲 Warm Sides (<span id="filter-count-warm-sides">0</span>)
               </button>
-              <button data-filter="veggies" class="category-pill whitespace-nowrap px-3 py-1.5 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">
+              <button data-filter="veggies" class="category-pill whitespace-nowrap px-3 py-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 shrink-0">
                 🥔 Veggies & Potatoes (<span id="filter-count-veggies">0</span>)
               </button>
-              <button data-filter="breads" class="category-pill whitespace-nowrap px-3 py-1.5 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">
+              <button data-filter="breads" class="category-pill whitespace-nowrap px-3 py-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 shrink-0">
                 🍞 Breads (<span id="filter-count-breads">0</span>)
               </button>
-              <button data-filter="appetizers" class="category-pill whitespace-nowrap px-3 py-1.5 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">
+              <button data-filter="appetizers" class="category-pill whitespace-nowrap px-3 py-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 shrink-0">
                 🧀 Appetizers (<span id="filter-count-appetizers">0</span>)
               </button>
-              <button data-filter="desserts" class="category-pill whitespace-nowrap px-3 py-1.5 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">
+              <button data-filter="desserts" class="category-pill whitespace-nowrap px-3 py-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 shrink-0">
                 🍰 Desserts (<span id="filter-count-desserts">0</span>)
               </button>
-              <button data-filter="drinks" class="category-pill whitespace-nowrap px-3 py-1.5 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200">
+              <button data-filter="drinks" class="category-pill whitespace-nowrap px-3 py-2 rounded-xl bg-stone-100 text-stone-600 hover:bg-stone-200 shrink-0">
                 🥤 Drinks & Extras (<span id="filter-count-drinks">0</span>)
               </button>
             </div>
 
             <!-- Dietary filter chips & sorting -->
-            <div class="flex flex-wrap items-center justify-between gap-2 pt-3 mt-2 border-t border-stone-100 text-xs">
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2.5 mt-2 border-t border-stone-100 text-xs">
               <div class="flex items-center gap-1.5 flex-wrap">
-                <span class="text-stone-400 font-semibold">Filter:</span>
-                <button id="dietary-filter-veg" class="dietary-pill px-2.5 py-1 rounded-lg border border-stone-200 text-stone-600 hover:bg-stone-100">
+                <span class="text-stone-400 font-semibold text-[11px]">Dietary:</span>
+                <button id="dietary-filter-veg" class="dietary-pill px-2.5 py-1.5 rounded-lg border border-stone-200 text-stone-600 hover:bg-stone-100 active:scale-95 transition-transform">
                   🌱 Vegetarian
                 </button>
-                <button id="dietary-filter-gf" class="dietary-pill px-2.5 py-1 rounded-lg border border-stone-200 text-stone-600 hover:bg-stone-100">
+                <button id="dietary-filter-gf" class="dietary-pill px-2.5 py-1.5 rounded-lg border border-stone-200 text-stone-600 hover:bg-stone-100 active:scale-95 transition-transform">
                   🌾 Gluten-Free
                 </button>
-                <button id="dietary-filter-nut" class="dietary-pill px-2.5 py-1 rounded-lg border border-stone-200 text-stone-600 hover:bg-stone-100">
+                <button id="dietary-filter-nut" class="dietary-pill px-2.5 py-1.5 rounded-lg border border-stone-200 text-stone-600 hover:bg-stone-100 active:scale-95 transition-transform">
                   🥜 Nut-Free
                 </button>
               </div>
 
               <div class="flex items-center gap-1.5 text-stone-500">
-                <span class="font-semibold">Sort:</span>
-                <select id="sort-dishes-select" class="bg-transparent border-0 text-stone-700 font-semibold focus:ring-0 cursor-pointer text-xs">
+                <span class="font-semibold text-[11px]">Sort:</span>
+                <select id="sort-dishes-select" class="bg-transparent border-0 text-stone-700 font-semibold focus:ring-0 cursor-pointer text-xs py-1">
                   <option value="newest">Newest Added</option>
                   <option value="name">Dish Name (A-Z)</option>
                   <option value="category">Category</option>
@@ -685,16 +641,16 @@
           </div>
 
           <!-- The List of Dishes -->
-          <div id="dishes-list-container" class="space-y-3.5">
+          <div id="dishes-list-container" class="space-y-3">
             <!-- Dynamically populated by app.js -->
           </div>
 
           <!-- Empty State (When no search matches or empty) -->
-          <div id="empty-dishes-state" class="hidden bg-white rounded-3xl p-10 text-center border border-dashed border-stone-300">
-            <div class="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3">
-              <i data-lucide="soup" class="w-7 h-7"></i>
+          <div id="empty-dishes-state" class="hidden bg-white rounded-2xl sm:rounded-3xl p-8 text-center border border-dashed border-stone-300">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3">
+              <i data-lucide="soup" class="w-6 h-6"></i>
             </div>
-            <h4 class="font-display font-bold text-lg text-stone-800">No dishes match your filter</h4>
+            <h4 class="font-display font-bold text-base sm:text-lg text-stone-800">No dishes match your filter</h4>
             <p class="text-xs text-stone-500 max-w-sm mx-auto mt-1 mb-4">
               Try adjusting your search query or category filters, or be the first to sign up a dish!
             </p>
@@ -710,56 +666,131 @@
     </div>
   </main>
 
-  <!-- ================= GAMES & ENTERTAINMENT SECTION ================= -->
-  <section id="games-section" class="py-14 bg-gradient-to-b from-stone-50 to-white border-t border-stone-200">
+  <!-- ================= HIGHLIGHTS & KEY DETAILS ================= -->
+  <section id="event-details" class="py-10 sm:py-14 bg-white border-t border-stone-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="text-center max-w-2xl mx-auto mb-10">
+      <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1 sm:mb-2">Block Party Lineup</h2>
+        <h3 class="font-display text-2xl sm:text-3xl font-extrabold text-stone-900">What Makes Cooks Crossing Great</h3>
+        <p class="text-xs sm:text-sm text-stone-600 mt-2">Bring your family, your lawn chairs, and an appetite. Here's what's lined up:</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+        
+        <!-- Card 1: James Strickland Pig Roast -->
+        <div class="bg-gradient-to-b from-amber-50/60 to-white border border-amber-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-sm">
+          <div class="w-11 h-11 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold text-xl mb-3 shadow-md shadow-amber-500/20">
+            🍖
+          </div>
+          <div class="inline-block bg-amber-100 text-amber-900 text-xs font-bold px-2.5 py-0.5 rounded-full mb-2">
+            Main Course Provided
+          </div>
+          <h4 class="font-display font-bold text-lg sm:text-xl text-stone-900 mb-1.5">James Strickland's Pig Roast</h4>
+          <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+            James is firing up the smoker early Saturday morning to cook a tender whole roasted pig for the entire neighborhood! Pulled pork, buns, and barbecue sauces will be ready at 5:00 PM.
+          </p>
+          <div class="mt-4 pt-3 border-t border-amber-100 flex items-center gap-2 text-xs font-semibold text-amber-800">
+            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+            <span>Free for all Cooks Crossing residents</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Games (Cornhole & Volleyball) -->
+        <div class="bg-gradient-to-b from-emerald-50/60 to-white border border-emerald-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-sm">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xl mb-3 shadow-md shadow-emerald-600/20">
+            🎯
+          </div>
+          <div class="inline-block bg-emerald-100 text-emerald-900 text-xs font-bold px-2.5 py-0.5 rounded-full mb-2">
+            Fun & Friendly Games
+          </div>
+          <h4 class="font-display font-bold text-lg sm:text-xl text-stone-900 mb-1.5">Cornhole & Volleyball</h4>
+          <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+            Games will be set up across the field for all ages. Join the casual cornhole tournament or jump into the grass volleyball games! Feel free to bring frisbees, ladder toss, or spikeball.
+          </p>
+          <div class="mt-4 pt-3 border-t border-emerald-100 flex items-center gap-2 text-xs font-semibold text-emerald-800">
+            <a href="#games-section" class="hover:underline flex items-center gap-1 font-bold">
+              <span>Sign up for Cornhole tournament</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Card 3: Potluck Side Dishes -->
+        <div class="bg-gradient-to-b from-terracotta-50/60 to-white border border-terracotta-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-sm">
+          <div class="w-11 h-11 rounded-2xl bg-terracotta-600 text-white flex items-center justify-center font-bold text-xl mb-3 shadow-md shadow-terracotta-600/20">
+            🥗
+          </div>
+          <div class="inline-block bg-terracotta-100 text-terracotta-900 text-xs font-bold px-2.5 py-0.5 rounded-full mb-2">
+            Bring a Dish to Share
+          </div>
+          <h4 class="font-display font-bold text-lg sm:text-xl text-stone-900 mb-1.5">Community Potluck Sides</h4>
+          <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
+            Every family is asked to bring their favorite side dish, salad, baked mac & cheese, cornbread, appetizer, or sweet dessert. Sign up below so we avoid duplicate dishes!
+          </p>
+          <div class="mt-4 pt-3 border-t border-terracotta-100 flex items-center gap-2 text-xs font-semibold text-terracotta-800">
+            <button onclick="mobileSwitchTab('form')" class="hover:underline flex items-center gap-1 font-bold">
+              <span>Enter your dish</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= GAMES & ENTERTAINMENT SECTION ================= -->
+  <section id="games-section" class="py-10 sm:py-14 bg-gradient-to-b from-stone-50 to-white border-t border-stone-200">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
         <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
           Lawn Games & Activities
         </span>
-        <h3 class="font-display text-3xl font-extrabold text-stone-900 mt-3">Cornhole & Volleyball Action</h3>
-        <p class="text-sm text-stone-600 mt-2">
-          Multiple game sets will be spaced out across the field near Julie Byers' home. Sign up your team or RSVP as a player!
+        <h3 class="font-display text-2xl sm:text-3xl font-extrabold text-stone-900 mt-2.5">Cornhole & Volleyball Action</h3>
+        <p class="text-xs sm:text-sm text-stone-600 mt-1.5">
+          Multiple game sets spaced out across the field near Julie Byers' home. Sign up your team or RSVP as a player!
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
         
         <!-- Cornhole Tournament Card -->
-        <div class="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200 shadow-md">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-2xl">
+        <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 border border-stone-200 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-11 h-11 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-2xl shrink-0">
               🎯
             </div>
             <div>
-              <h4 class="font-display font-extrabold text-xl text-stone-900">Cornhole Tournament</h4>
+              <h4 class="font-display font-extrabold text-lg sm:text-xl text-stone-900">Cornhole Tournament</h4>
               <p class="text-xs text-stone-500">2-Player Teams • Double Elimination • Starts 4:30 PM</p>
             </div>
           </div>
 
           <p class="text-xs sm:text-sm text-stone-600 mb-4 leading-relaxed">
-            Grab a neighbor or family member and see who takes home the 2026 Cooks Crossing Cornhole Trophy! All skill levels welcome.
+            Grab a neighbor and see who takes home the 2026 Cooks Crossing Cornhole Trophy! All skill levels welcome.
           </p>
 
-          <!-- Quick Cornhole Registration -->
-          <form id="cornhole-signup-form" class="space-y-3 bg-stone-50 p-4 rounded-2xl border border-stone-200 mb-5">
+          <!-- Quick Cornhole Registration (16px font on mobile) -->
+          <form id="cornhole-signup-form" class="space-y-2.5 bg-stone-50 p-3.5 rounded-2xl border border-stone-200 mb-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <input 
                 type="text" 
                 id="cornhole-team-name" 
                 required 
                 placeholder="Team / Player Names" 
-                class="px-3 py-2 text-xs sm:text-sm bg-white border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
+                class="px-3.5 py-2.5 text-base sm:text-sm bg-white border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
               />
               <input 
                 type="text" 
                 id="cornhole-street" 
                 placeholder="Your Street (e.g. Wiembley)" 
-                class="px-3 py-2 text-xs sm:text-sm bg-white border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
+                class="px-3.5 py-2.5 text-base sm:text-sm bg-white border border-stone-300 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none"
               />
             </div>
-            <button type="submit" class="w-full py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5">
+            <button type="submit" class="w-full py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 active:scale-[0.98]">
               <i data-lucide="plus" class="w-4 h-4"></i>
               <span>Join Cornhole Tournament</span>
             </button>
@@ -778,14 +809,14 @@
         </div>
 
         <!-- Grass Volleyball Card -->
-        <div class="bg-white rounded-3xl p-6 sm:p-7 border border-stone-200 shadow-md">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-2xl">
+        <div class="bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 border border-stone-200 shadow-sm">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-11 h-11 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-2xl shrink-0">
               🏐
             </div>
             <div>
-              <h4 class="font-display font-extrabold text-xl text-stone-900">Grass Volleyball</h4>
-              <p class="text-xs text-stone-500">Pickup Style • All Ages & Skill Levels • Open All Afternoon</p>
+              <h4 class="font-display font-extrabold text-lg sm:text-xl text-stone-900">Grass Volleyball</h4>
+              <p class="text-xs text-stone-500">Pickup Style • All Ages & Skill Levels • Open Afternoon</p>
             </div>
           </div>
 
@@ -793,24 +824,24 @@
             A full-sized grass volleyball net will be set up in the field. Continuous casual games with rotating teams—jump in whenever you want!
           </p>
 
-          <!-- Quick Volleyball Registration -->
-          <form id="volleyball-signup-form" class="space-y-3 bg-stone-50 p-4 rounded-2xl border border-stone-200 mb-5">
+          <!-- Quick Volleyball Registration (16px font on mobile) -->
+          <form id="volleyball-signup-form" class="space-y-2.5 bg-stone-50 p-3.5 rounded-2xl border border-stone-200 mb-4">
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
               <input 
                 type="text" 
                 id="volleyball-player-name" 
                 required 
                 placeholder="Player / Family Name" 
-                class="px-3 py-2 text-xs sm:text-sm bg-white border border-stone-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
+                class="px-3.5 py-2.5 text-base sm:text-sm bg-white border border-stone-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
               />
               <input 
                 type="text" 
                 id="volleyball-street" 
                 placeholder="Your Street (e.g. Brentford)" 
-                class="px-3 py-2 text-xs sm:text-sm bg-white border border-stone-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
+                class="px-3.5 py-2.5 text-base sm:text-sm bg-white border border-stone-300 rounded-xl focus:ring-2 focus:ring-emerald-500 outline-none"
               />
             </div>
-            <button type="submit" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5">
+            <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 active:scale-[0.98]">
               <i data-lucide="plus" class="w-4 h-4"></i>
               <span>Count Me In for Volleyball</span>
             </button>
@@ -833,59 +864,59 @@
     </div>
   </section>
 
-  <!-- ================= LOGISTICS & FAQ ACCORDION ================= -->
-  <section id="faq-section" class="py-14 bg-white border-t border-stone-200">
+  <!-- ================= LOGISTICS & FAQ ================= -->
+  <section id="faq-section" class="py-10 sm:py-14 bg-white border-t border-stone-200">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="text-center mb-10">
+      <div class="text-center mb-8">
         <h3 class="font-display text-2xl sm:text-3xl font-extrabold text-stone-900">Party Day Details & FAQ</h3>
-        <p class="text-sm text-stone-500 mt-1">Everything you need to know about the Cooks Crossing Block Party</p>
+        <p class="text-xs sm:text-sm text-stone-500 mt-1">Everything you need to know about the Cooks Crossing Block Party</p>
       </div>
 
-      <div class="space-y-4">
+      <div class="space-y-3.5">
         
         <!-- FAQ 1 -->
-        <div class="border border-stone-200 rounded-2xl p-5 hover:border-amber-300 transition-colors">
-          <h4 class="font-bold text-stone-900 text-base flex items-center gap-2">
-            <i data-lucide="map-pin" class="w-4 h-4 text-amber-600"></i>
+        <div class="border border-stone-200 rounded-2xl p-4 sm:p-5 hover:border-amber-300 transition-colors">
+          <h4 class="font-bold text-stone-900 text-sm sm:text-base flex items-center gap-2">
+            <i data-lucide="map-pin" class="w-4 h-4 text-amber-600 shrink-0"></i>
             Where exactly is the party located?
           </h4>
-          <p class="text-sm text-stone-600 mt-2 pl-6 leading-relaxed">
-            The event will be hosted at the spacious grassy field adjacent to <strong>Julie Byers' home at the corner of Wiembley and Brentford</strong>. We'll have tables, shade canopies, games, and the pig roast smoker set up there!
+          <p class="text-xs sm:text-sm text-stone-600 mt-2 pl-6 leading-relaxed">
+            The event will be hosted at the field adjacent to <strong>Julie Byers' home at the corner of Wiembley and Brentford</strong>. Tables, shade canopies, games, and the pig roast smoker will be set up there!
           </p>
         </div>
 
         <!-- FAQ 2 -->
-        <div class="border border-stone-200 rounded-2xl p-5 hover:border-amber-300 transition-colors">
-          <h4 class="font-bold text-stone-900 text-base flex items-center gap-2">
-            <i data-lucide="sparkles" class="w-4 h-4 text-amber-600"></i>
+        <div class="border border-stone-200 rounded-2xl p-4 sm:p-5 hover:border-amber-300 transition-colors">
+          <h4 class="font-bold text-stone-900 text-sm sm:text-base flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-4 h-4 text-amber-600 shrink-0"></i>
             What is provided vs. what should we bring?
           </h4>
-          <div class="text-sm text-stone-600 mt-2 pl-6 leading-relaxed space-y-1.5">
+          <div class="text-xs sm:text-sm text-stone-600 mt-2 pl-6 leading-relaxed space-y-1">
             <p><strong>Provided for you:</strong> Whole roasted pig & pulled pork (thanks to James Strickland!), barbecue buns & sauces, paper plates, napkins, forks, water dispensers, and ice.</p>
-            <p><strong>Please bring:</strong> Your potluck side dish or dessert (with serving spoons/tongs labeled with your tape/initials), lawn chairs or picnic blankets, and any personal beverages or coolers.</p>
+            <p><strong>Please bring:</strong> Your potluck side dish or dessert (labeled!), lawn chairs or picnic blankets, and personal beverages or coolers.</p>
           </div>
         </div>
 
         <!-- FAQ 3 -->
-        <div class="border border-stone-200 rounded-2xl p-5 hover:border-amber-300 transition-colors">
-          <h4 class="font-bold text-stone-900 text-base flex items-center gap-2">
-            <i data-lucide="plug" class="w-4 h-4 text-amber-600"></i>
+        <div class="border border-stone-200 rounded-2xl p-4 sm:p-5 hover:border-amber-300 transition-colors">
+          <h4 class="font-bold text-stone-900 text-sm sm:text-base flex items-center gap-2">
+            <i data-lucide="plug" class="w-4 h-4 text-amber-600 shrink-0"></i>
             Can I bring hot dishes or crockpots?
           </h4>
-          <p class="text-sm text-stone-600 mt-2 pl-6 leading-relaxed">
+          <p class="text-xs sm:text-sm text-stone-600 mt-2 pl-6 leading-relaxed">
             Yes! Julie has outdoor power strips and heavy-duty extension cords set up at the warming table for slow cookers and crockpots. Please mark "Needs Outlet" on your dish signup so we allocate enough plugs!
           </p>
         </div>
 
         <!-- FAQ 4 -->
-        <div class="border border-stone-200 rounded-2xl p-5 hover:border-amber-300 transition-colors">
-          <h4 class="font-bold text-stone-900 text-base flex items-center gap-2">
-            <i data-lucide="car" class="w-4 h-4 text-amber-600"></i>
+        <div class="border border-stone-200 rounded-2xl p-4 sm:p-5 hover:border-amber-300 transition-colors">
+          <h4 class="font-bold text-stone-900 text-sm sm:text-base flex items-center gap-2">
+            <i data-lucide="car" class="w-4 h-4 text-amber-600 shrink-0"></i>
             Where should we park?
           </h4>
-          <p class="text-sm text-stone-600 mt-2 pl-6 leading-relaxed">
-            Since we're all neighbors in Cooks Crossing, walking or golf-carting over is highly encouraged! If driving, please park along one side of Brentford so emergency vehicles and through traffic can easily pass.
+          <p class="text-xs sm:text-sm text-stone-600 mt-2 pl-6 leading-relaxed">
+            Walking or golf-carting over is highly encouraged! If driving, please park along one side of Brentford so emergency vehicles and through traffic can easily pass.
           </p>
         </div>
 
@@ -895,68 +926,119 @@
   </section>
 
   <!-- ================= FOOTER ================= -->
-  <footer class="bg-stone-900 text-stone-300 py-10 border-t border-stone-800">
+  <footer class="bg-stone-900 text-stone-300 py-8 sm:py-10 border-t border-stone-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-stone-800">
-        <div>
-          <div class="flex items-center gap-2.5">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-5 pb-6 border-b border-stone-800">
+        <div class="text-center md:text-left">
+          <div class="flex items-center justify-center md:justify-start gap-2.5">
             <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold text-sm">
               CC
             </div>
-            <span class="font-display font-extrabold text-lg text-white">Cooks Crossing Block Party 2026</span>
+            <span class="font-display font-extrabold text-base sm:text-lg text-white">Cooks Crossing Block Party 2026</span>
           </div>
           <p class="text-xs text-stone-400 mt-1">
             Saturday, October 3rd, 2026 • 4:00 PM • Corner of Wiembley & Brentford
           </p>
         </div>
 
-        <div class="flex items-center gap-3 text-xs">
-          <button id="export-csv-btn" class="px-3 py-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 transition-colors flex items-center gap-1.5 border border-stone-700">
+        <div class="flex items-center gap-2.5 flex-wrap justify-center text-xs">
+          <button id="export-csv-btn" class="px-3 py-2 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 transition-colors flex items-center gap-1.5 border border-stone-700">
             <i data-lucide="download" class="w-3.5 h-3.5"></i>
-            <span>Export Potluck to CSV</span>
+            <span>Export CSV</span>
           </button>
 
-          <button id="footer-sync-btn" class="px-3 py-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 transition-colors flex items-center gap-1.5 border border-stone-700">
+          <button id="footer-sync-btn" class="px-3 py-2 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 transition-colors flex items-center gap-1.5 border border-stone-700">
             <i data-lucide="settings" class="w-3.5 h-3.5"></i>
             <span>Sync Settings</span>
           </button>
 
-          <button id="reset-data-btn" class="px-3 py-1.5 rounded-lg bg-stone-800 hover:bg-rose-950/60 text-stone-400 hover:text-rose-300 transition-colors flex items-center gap-1.5 border border-stone-700">
+          <button id="reset-data-btn" class="px-3 py-2 rounded-lg bg-stone-800 hover:bg-rose-950/60 text-stone-400 hover:text-rose-300 transition-colors flex items-center gap-1.5 border border-stone-700">
             <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
-            <span>Reset Demo Data</span>
+            <span>Reset Demo</span>
           </button>
         </div>
       </div>
 
-      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-500">
-        <p>Made with love for the Cooks Crossing community. Ready for GitHub Pages deployment.</p>
-        <p>Hosted by Julie Byers & James Strickland • See you Saturday, Oct 3rd!</p>
+      <div class="pt-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] sm:text-xs text-stone-500 text-center sm:text-left">
+        <p>Made for the Cooks Crossing community. Ready for GitHub Pages.</p>
+        <p>Hosted by Julie Byers & James Strickland • See you Oct 3rd!</p>
       </div>
 
     </div>
   </footer>
 
+  <!-- ================= MOBILE FIXED BOTTOM NAVIGATION DOCK ================= -->
+  <!-- Priority mobile navigation: effortless thumb access to Dishes, Add, Games, Info -->
+  <aside aria-label="Mobile Navigation" class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-stone-200 mobile-bottom-dock flex md:hidden items-center justify-around px-2 pt-2" id="mobile-bottom-dock">
+    
+    <!-- Dishes Tab -->
+    <button 
+      type="button" 
+      onclick="mobileSwitchTab('dishes')" 
+      class="flex flex-col items-center justify-center gap-1 py-1 px-3 text-stone-600 hover:text-amber-700 transition-colors relative"
+      id="dock-btn-dishes"
+    >
+      <div class="relative">
+        <i data-lucide="soup" class="w-5 h-5 text-amber-600"></i>
+        <span id="dock-dish-count" class="absolute -top-1.5 -right-2 bg-amber-600 text-white text-[9px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+      </div>
+      <span class="text-[10px] font-bold">Dishes</span>
+    </button>
+
+    <!-- Center Add Button (Prominent) -->
+    <button 
+      type="button" 
+      onclick="mobileSwitchTab('form')" 
+      class="flex items-center gap-1.5 bg-gradient-to-r from-amber-600 to-terracotta-600 text-white font-extrabold text-xs px-4 py-2 rounded-full shadow-lg shadow-amber-600/30 active:scale-95 transition-transform"
+      id="dock-btn-add"
+    >
+      <i data-lucide="plus" class="w-4 h-4"></i>
+      <span>Add Dish</span>
+    </button>
+
+    <!-- Games Tab -->
+    <a 
+      href="#games-section" 
+      class="flex flex-col items-center justify-center gap-1 py-1 px-3 text-stone-600 hover:text-emerald-700 transition-colors"
+      id="dock-btn-games"
+    >
+      <i data-lucide="trophy" class="w-5 h-5 text-emerald-600"></i>
+      <span class="text-[10px] font-bold">Games</span>
+    </a>
+
+    <!-- Info Tab -->
+    <a 
+      href="#event-details" 
+      class="flex flex-col items-center justify-center gap-1 py-1 px-3 text-stone-600 hover:text-amber-700 transition-colors"
+      id="dock-btn-info"
+    >
+      <i data-lucide="map-pin" class="w-5 h-5 text-stone-500"></i>
+      <span class="text-[10px] font-bold">Details</span>
+    </a>
+
+  </aside>
+
   <!-- ================= MODAL: CLOUD SYNC & GITHUB PAGES INTEGRATION ================= -->
-  <div id="sync-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-stone-200 relative animate-scale-in">
+  <div id="sync-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-lg w-full p-5 sm:p-7 shadow-2xl border border-stone-200 relative animate-scale-in max-h-[90vh] overflow-y-auto">
       
-      <button id="close-sync-modal" class="absolute top-5 right-5 text-stone-400 hover:text-stone-700">
+      <button id="close-sync-modal" class="absolute top-4 right-4 text-stone-400 hover:text-stone-700 p-1">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
+      <div class="flex items-center gap-3 mb-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
           <i data-lucide="cloud" class="w-5 h-5"></i>
         </div>
         <div>
-          <h3 class="font-display font-bold text-lg text-stone-900">Data Persistence & Live Sync</h3>
+          <h3 class="font-display font-bold text-base sm:text-lg text-stone-900">Data Persistence & Live Sync</h3>
           <p class="text-xs text-stone-500">How your entries are stored & shared</p>
         </div>
       </div>
 
       <!-- Current Mode Box -->
-      <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 mb-4">
+      <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 mb-3.5">
         <div class="flex items-center gap-2 text-emerald-800 font-bold text-xs">
           <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
           <span>Local Storage Active</span>
@@ -967,10 +1049,10 @@
       </div>
 
       <!-- Cloud Sync Explanation -->
-      <div class="space-y-3 text-xs text-stone-600 leading-relaxed mb-5">
+      <div class="space-y-3 text-xs text-stone-600 leading-relaxed mb-4">
         <h4 class="font-bold text-stone-800 uppercase tracking-wider text-[11px]">Multi-Household Live Sync on GitHub Pages</h4>
         <p>
-          Since GitHub Pages hosts static web files, you can optionally connect a free cloud backend (such as <strong>Firebase Firestore</strong> or a <strong>Google Sheet</strong>) so multiple neighbors on different phones see each other's live updates in real time!
+          Since GitHub Pages hosts static web files, you can optionally connect a free cloud backend (such as <strong>Firebase Firestore</strong>) so multiple neighbors on different phones see each other's live updates in real time!
         </p>
 
         <!-- Optional Firebase Config Input -->
@@ -1005,23 +1087,15 @@
         </div>
       </div>
 
-      <button id="dismiss-sync-modal" class="w-full py-2.5 bg-stone-900 text-white rounded-xl text-xs font-bold hover:bg-stone-800 transition-colors">
+      <button id="dismiss-sync-modal" class="w-full py-3 bg-stone-900 text-white rounded-xl text-xs font-bold hover:bg-stone-800 transition-colors">
         Got it!
       </button>
 
     </div>
   </div>
 
-  <!-- ================= FLOATING ACTION BUTTON (MOBILE) ================= -->
-  <div class="fixed bottom-5 right-5 z-30 md:hidden">
-    <a href="#dish-form-section" class="flex items-center gap-2 bg-gradient-to-r from-amber-600 to-terracotta-600 text-white font-bold text-xs py-3 px-4 rounded-full shadow-2xl shadow-black/40 border border-white/20 active:scale-95 transition-transform">
-      <i data-lucide="plus" class="w-4 h-4"></i>
-      <span>Add Dish</span>
-    </a>
-  </div>
-
   <!-- Toast Notification Container -->
-  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+  <div id="toast-container" class="fixed top-3 left-3 right-3 sm:left-auto sm:right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <!-- Firebase Web SDK (Optional cloud sync) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>

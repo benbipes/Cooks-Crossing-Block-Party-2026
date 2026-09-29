@@ -1,19 +1,52 @@
 /* Custom Styles for Cooks Crossing Block Party 2026 */
+/* MOBILE-FIRST OPTIMIZATIONS & DESKTOP ENHANCEMENTS */
 
 :root {
   --brand-amber: #d97706;
   --brand-forest: #2b633e;
 }
 
-/* Smooth Scrolling */
+/* Smooth Scrolling & Touch Optimizations */
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
-/* Custom Scrollbar for subtle feel */
+body {
+  /* Provide space for mobile bottom navigation dock */
+  padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 72px);
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-bottom: 0;
+  }
+}
+
+/* Fast tap response (eliminates 300ms tap delay on mobile) */
+button, 
+a, 
+input, 
+select, 
+label, 
+textarea {
+  touch-action: manipulation;
+}
+
+/* Prevent annoying iOS Safari auto-zoom on input focus */
+@media screen and (max-width: 767px) {
+  input, 
+  select, 
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Custom Scrollbar for desktop */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: #f5f5f4;
@@ -26,50 +59,91 @@ html {
   background: #a8a29e;
 }
 
+/* Hide scrollbars for mobile horizontal sliders */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+
 /* Hero Section Image & Overlay */
 .hero-wrapper {
-  min-height: 520px;
+  min-height: 480px;
   position: relative;
   display: flex;
   align-items: center;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
+  .hero-wrapper {
+    min-height: 540px;
+  }
+}
+
+@media (min-width: 1024px) {
   .hero-wrapper {
     min-height: 580px;
   }
 }
 
+/* Ensure the hot air balloon is perfectly framed on mobile portrait viewports */
+#hero-image {
+  object-position: 50% 26%;
+}
+
+@media (min-width: 640px) {
+  #hero-image {
+    object-position: center center;
+  }
+}
+
 /* Subtle Text Shadows for Hero readability */
 .text-shadow-sm {
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
 }
 
 .text-shadow-md {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.85);
 }
 
 /* Modal animation */
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: scale(0.96) translateY(8px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 
 .animate-scale-in {
-  animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: scaleIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Mobile Segmented Control */
+.segmented-btn {
+  transition: all 0.2s ease;
+}
+
+.segmented-btn.active {
+  background-color: #ffffff;
+  color: #78350f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  font-weight: 700;
 }
 
 /* Category Pills Active State */
 .category-pill.active {
   background-color: #d97706 !important;
   color: #ffffff !important;
-  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.35);
+  font-weight: 700;
 }
 
 /* Dietary Filter Active State */
@@ -81,50 +155,68 @@ html {
 }
 
 /* Reaction Button animation */
+.reaction-btn {
+  min-height: 38px;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
 .reaction-btn:active {
-  transform: scale(1.15);
+  transform: scale(0.95);
 }
 
-/* Card Hover Transition */
+/* Dish Card Hover & Active Transitions */
 .dish-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  -webkit-touch-callout: none;
 }
 
-.dish-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
-  border-color: #fbbf24;
+.dish-card:active {
+  transform: scale(0.995);
+}
+
+@media (min-width: 768px) {
+  .dish-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.06), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+    border-color: #fbbf24;
+  }
 }
 
 /* Toast Notification Animation */
 @keyframes toastSlideIn {
   from {
-    transform: translateX(100%);
+    transform: translateY(-100%);
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 
 @keyframes toastSlideOut {
   from {
-    transform: translateX(0);
+    transform: translateY(0);
     opacity: 1;
   }
   to {
-    transform: translateX(100%);
+    transform: translateY(-100%);
     opacity: 0;
   }
 }
 
 .toast-enter {
-  animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: toastSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .toast-leave {
-  animation: toastSlideOut 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: toastSlideOut 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Mobile Bottom Navigation Dock Safe Area */
+.mobile-bottom-dock {
+  padding-bottom: max(0.6rem, env(safe-area-inset-bottom));
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
 }
 
 /* ================= PRINT STYLESHEET ================= */
@@ -133,6 +225,8 @@ html {
   nav,
   .hero-wrapper img,
   #navbar,
+  #mobile-view-toggle,
+  #mobile-bottom-dock,
   #dish-form-section,
   #category-filter-pills,
   #search-dishes-input,
@@ -152,13 +246,14 @@ html {
     background: #ffffff !important;
     color: #000000 !important;
     font-size: 12pt;
+    padding-bottom: 0 !important;
   }
 
   .hero-wrapper {
     background: #ffffff !important;
     color: #000000 !important;
     min-height: auto !important;
-    padding: 20px 0 !important;
+    padding: 16px 0 !important;
     border-bottom: 2px solid #000000;
   }
 
@@ -174,6 +269,7 @@ html {
   #dishes-section {
     width: 100% !important;
     max-width: 100% !important;
+    display: block !important;
   }
 
   .dish-card {

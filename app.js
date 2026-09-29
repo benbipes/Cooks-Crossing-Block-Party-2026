@@ -491,9 +491,15 @@ function updateCategoryCounts() {
     if (el) el.textContent = item.count;
   });
 
-  // Top Nav Badge & Hero Count
+  // Top Nav Badge, Mobile Tab Badge, Dock Count & Hero Count
   const navBadge = document.getElementById("nav-dish-count-badge");
   if (navBadge) navBadge.textContent = dishesState.length;
+
+  const mobileTabBadge = document.getElementById("mobile-tab-count-badge");
+  if (mobileTabBadge) mobileTabBadge.textContent = dishesState.length;
+
+  const dockCount = document.getElementById("dock-dish-count");
+  if (dockCount) dockCount.textContent = dishesState.length;
 
   const heroTag = document.getElementById("hero-dish-count-tag");
   if (heroTag) heroTag.textContent = `${dishesState.length} dishes`;
@@ -833,6 +839,9 @@ function handleAddDish(e) {
   triggerCelebration();
   showToast(`Added "${dishName}" to the potluck! Thank you, ${contributorName}!`);
 
+  // Switch to dishes tab on mobile so neighbor immediately sees their new dish
+  mobileSwitchTab("dishes");
+
   // Scroll to dishes list and highlight the new item
   const container = document.getElementById("dishes-section");
   if (container) {
@@ -849,6 +858,80 @@ function handleAddDish(e) {
     }
   }, 400);
 }
+
+// ================= MOBILE VIEW TOGGLE / SEGMENTED CONTROL =================
+window.mobileSwitchTab = function (tab) {
+  const formSection = document.getElementById("dish-form-section");
+  const dishesSection = document.getElementById("dishes-section");
+  const tabBtnDishes = document.getElementById("tab-btn-dishes");
+  const tabBtnForm = document.getElementById("tab-btn-form");
+
+  if (!formSection || !dishesSection) return;
+
+  if (tab === "form") {
+    // Show form on mobile, hide dishes
+    formSection.classList.remove("hidden");
+    formSection.classList.add("block");
+    dishesSection.classList.add("hidden");
+    dishesSection.classList.remove("block");
+
+    if (tabBtnForm) {
+      tabBtnForm.classList.add("active");
+      tabBtnForm.classList.remove("text-stone-600");
+    }
+    if (tabBtnDishes) {
+      tabBtnDishes.classList.remove("active");
+      tabBtnDishes.classList.add("text-stone-600");
+    }
+
+    // Scroll to form smoothly
+    formSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // Focus first input field
+    setTimeout(() => {
+      const nameInput = document.getElementById("contributor-name");
+      if (nameInput) nameInput.focus();
+    }, 400);
+  } else {
+    // Show dishes on mobile, hide form
+    formSection.classList.add("hidden");
+    formSection.classList.remove("block");
+    dishesSection.classList.remove("hidden");
+    dishesSection.classList.add("block");
+
+    if (tabBtnDishes) {
+      tabBtnDishes.classList.add("active");
+      tabBtnDishes.classList.remove("text-stone-600");
+    }
+    if (tabBtnForm) {
+      tabBtnForm.classList.remove("active");
+      tabBtnForm.classList.add("text-stone-600");
+    }
+
+    const potluckMain = document.getElementById("potluck-main");
+    if (potluckMain) {
+      potluckMain.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
+  lucide.createIcons();
+};
+
+// Handle window resizing between mobile and desktop viewports
+window.addEventListener("resize", () => {
+  if (window.innerWidth >= 1024) {
+    const formSection = document.getElementById("dish-form-section");
+    const dishesSection = document.getElementById("dishes-section");
+    if (formSection) {
+      formSection.classList.remove("hidden");
+      formSection.classList.add("lg:block");
+    }
+    if (dishesSection) {
+      dishesSection.classList.remove("hidden");
+      dishesSection.classList.add("block");
+    }
+  }
+});
 
 // ================= ACTIONS: LIKE & DELETE =================
 window.likeDish = function (id) {
