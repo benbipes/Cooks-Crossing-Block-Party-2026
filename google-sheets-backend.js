@@ -1,39 +1,3 @@
-/**
- * GOOGLE SHEETS BACKEND FOR COOKS CROSSING BLOCK PARTY 2026
- * ---------------------------------------------------------
- * Follow these simple 2-minute steps to enable multi-device sync
- * across all neighbors' phones and computers on GitHub Pages:
- *
- * 1. Open Google Sheets (https://sheets.new) and name the spreadsheet:
- *    "Cooks Crossing Potluck 2026"
- *
- * 2. In the menu, click:
- *    Extensions > Apps Script
- *
- * 3. Delete any code in the editor, and PASTE THIS ENTIRE SCRIPT below.
- *
- * 4. Click the blue "Deploy" button (top right) > "New deployment".
- *
- * 5. Configure the deployment:
- *    - Click the gear icon (Select type) > Choose "Web app"
- *    - Description: "Potluck Sync API"
- *    - Execute as: "Me"
- *    - Who has access: "Anyone" (CRITICAL: Select "Anyone", NOT "Only myself")
- *
- * 6. Click "Deploy", approve permissions with your Google account.
- *
- * 7. Copy the "Web app URL" (it looks like: https://script.google.com/macros/s/AKfycb.../exec).
- *
- * 8. Open config.js in your project and set:
- *    googleSheetWebAppUrl: "https://script.google.com/macros/s/YOUR_ID/exec"
- *
- * 9. Commit & push config.js to GitHub:
- *    git add config.js && git commit -m "Connect Google Sheets live sync" && git push origin main
- *
- * That's it! Every device and phone that visits your GitHub Pages site
- * will now automatically share the same live potluck list!
- */
-
 function doGet(e) {
   var sheet = getOrCreateSheet();
   var rows = sheet.getDataRange().getValues();
