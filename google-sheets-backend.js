@@ -53,6 +53,15 @@ function doPost(e) {
       return createJsonResponse({ status: "error", message: "Dish not found" });
     }
 
+    // Handle "clear" action
+    if (data.action === "clear") {
+      var lastRow = sheet.getLastRow();
+      if (lastRow > 1) {
+        sheet.deleteRows(2, lastRow - 1);
+      }
+      return createJsonResponse({ status: "success", message: "All dishes cleared" });
+    }
+
     // Handle "add dish"
     var id = data.id || ("dish-" + Date.now());
     var name = data.name || "Untitled Dish";

@@ -5,7 +5,7 @@
 
 // ================= STORAGE KEYS =================
 const STORAGE_KEYS = {
-  DISHES: "cooks_crossing_dishes_v3",
+  DISHES: "cooks_crossing_dishes_v5",
   GSHEET_URL: "cooks_crossing_gsheet_url_v3",
   FIREBASE_CONFIG: "cooks_crossing_firebase_config_v3"
 };
@@ -62,6 +62,13 @@ function resolveCloudConfig() {
 
 // Load persistent data from LocalStorage & Cloud
 function loadData() {
+  // Purge any legacy test cache keys
+  try {
+    localStorage.removeItem("cooks_crossing_dishes_v2");
+    localStorage.removeItem("cooks_crossing_dishes_v3");
+    localStorage.removeItem("cooks_crossing_dishes_v4");
+  } catch (e) {}
+
   // 1. Instant load from local cache
   try {
     const savedDishes = localStorage.getItem(STORAGE_KEYS.DISHES);
@@ -104,26 +111,8 @@ function fetchFromGoogleSheet() {
     .then((res) => res.json())
     .then((data) => {
       if (data && Array.isArray(data.dishes)) {
-        // Find any dishes created locally that haven't appeared in the cloud yet
-        const cloudIds = new Set(data.dishes.map((d) => String(d.id || "")));
-        const cloudNames = new Set(data.dishes.map((d) => (d.name || "").toLowerCase().trim()));
-
-        const pendingDishes = dishesState.filter((localDish) => {
-          const idMatch = localDish.id && cloudIds.has(String(localDish.id));
-          const nameMatch = localDish.name && cloudNames.has((localDish.name || "").toLowerCase().trim());
-          return !idMatch && !nameMatch;
-        });
-
-        // Auto-upload any pending dishes to the cloud right now!
-        if (pendingDishes.length > 0) {
-          pendingDishes.forEach((dish) => {
-            postToGoogleSheet(dish);
-          });
-        }
-
-        // Keep pending local dishes visible at top, combined with confirmed cloud dishes
-        const combined = [...pendingDishes, ...data.dishes];
-        dishesState = deduplicateDishes(combined);
+        // Cloud is single source of truth: reflects whatever is in Google Sheet
+        dishesState = deduplicateDishes(data.dishes);
         saveLocalCache();
         renderAll();
         updateSyncStatusBadge();
