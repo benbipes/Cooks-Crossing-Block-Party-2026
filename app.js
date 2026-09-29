@@ -1,141 +1,20 @@
 /**
- * Cooks Crossing Block Party 2026
- * Interactive Potluck & Event Coordination Script
+ * Cooks Crossing Block Party & Pig Pickin' 2026
+ * Interactive Potluck Coordination Script
  */
 
-// ================= INITIAL SEED DATA =================
-const DEFAULT_DISHES = [
-  {
-    id: "dish-host-pig",
-    name: "Whole Roasted Pig & Signature Carolina BBQ Sauces",
-    contributor: "James Strickland",
-    street: "104 Wiembley",
-    category: "warm-sides",
-    servings: "20+",
-    dietary: ["Contains Meat"],
-    notes: "Slow-roasted over hickory all day! Provided for the entire neighborhood along with fresh slider buns.",
-    isHostProvided: true,
-    likes: 24,
-    createdAt: 1759400000000
-  },
-  {
-    id: "dish-host-cornbread",
-    name: "Cast-Iron Sweet Southern Cornbread with Honey Butter",
-    contributor: "Julie Byers (Party Host)",
-    street: "Corner of Wiembley & Brentford",
-    category: "breads",
-    servings: "20+",
-    dietary: ["Vegetarian"],
-    notes: "Baked fresh in cast-iron skillets. Honey butter served on the side.",
-    isHostProvided: true,
-    likes: 19,
-    createdAt: 1759405000000
-  },
-  {
-    id: "dish-3",
-    name: "Loaded Red Potato Salad with Bacon & Chives",
-    contributor: "Marcus & Elena Vance",
-    street: "118 Brentford",
-    category: "salads",
-    servings: "16-20",
-    dietary: ["Gluten-Free"],
-    notes: "Creamy dressing with Dijon, sour cream, and crispy Applewood smoked bacon.",
-    isHostProvided: false,
-    likes: 14,
-    createdAt: 1759410000000
-  },
-  {
-    id: "dish-4",
-    name: "Triple Cheese Smoked Gouda Macaroni & Cheese",
-    contributor: "The Robinson Family",
-    street: "204 Wiembley",
-    category: "warm-sides",
-    servings: "16-20",
-    dietary: ["Vegetarian", "Needs Outlet"],
-    notes: "In a slow-cooker. Will need an electrical outlet at the food table to stay warm.",
-    isHostProvided: false,
-    likes: 18,
-    createdAt: 1759415000000
-  },
-  {
-    id: "dish-5",
-    name: "Crisp Watermelon, Fresh Mint & Crumbled Feta Salad",
-    contributor: "David & Priya Patel",
-    street: "109 Brentford",
-    category: "salads",
-    servings: "12-15",
-    dietary: ["Vegetarian", "Gluten-Free", "Nut-Free"],
-    notes: "Light and refreshing tossed with balsamic glaze drizzle. Served chilled.",
-    isHostProvided: false,
-    likes: 11,
-    createdAt: 1759420000000
-  },
-  {
-    id: "dish-6",
-    name: "Grilled Sweet Corn with Lime-Cotija Compound Butter",
-    contributor: "Tom & Becky Larson",
-    street: "221 Wiembley",
-    category: "veggies",
-    servings: "20+",
-    dietary: ["Vegetarian", "Gluten-Free"],
-    notes: "Fresh local sweet corn skewers grilled with chili-lime cotija butter.",
-    isHostProvided: false,
-    likes: 15,
-    createdAt: 1759425000000
-  },
-  {
-    id: "dish-7",
-    name: "Warm Cinnamon Apple Crisp with Vanilla Bean Cream",
-    contributor: "The Martinez Family",
-    street: "135 Wiembley",
-    category: "desserts",
-    servings: "16-20",
-    dietary: ["Vegetarian"],
-    notes: "Made with local Honeycrisp apples and oat streusel topping.",
-    isHostProvided: false,
-    likes: 21,
-    createdAt: 1759430000000
-  },
-  {
-    id: "dish-8",
-    name: "Fresh Strawberry Lemonade & Sweet Iced Tea Dispensers",
-    contributor: "Karen & Steve Miller",
-    street: "102 Brentford",
-    category: "drinks",
-    servings: "20+",
-    dietary: ["Gluten-Free", "Nut-Free", "Dairy-Free", "Vegan"],
-    notes: "Two 3-gallon glass drink dispensers with cups and ice included.",
-    isHostProvided: false,
-    likes: 12,
-    createdAt: 1759435000000
-  }
-];
-
-const DEFAULT_CORNHOLE_TEAMS = [
-  { id: "c-1", name: "The Smokin' Ringers (James Strickland & Dave)", street: "Wiembley" },
-  { id: "c-2", name: "Julie's Cornhole Crew (Julie Byers & Sam)", street: "Wiembley & Brentford" },
-  { id: "c-3", name: "Brentford Board Masters (Marcus & Elena)", street: "118 Brentford" }
-];
-
-const DEFAULT_VOLLEYBALL_PLAYERS = [
-  { id: "v-1", name: "Sarah & Mike Thompson", street: "140 Wiembley" },
-  { id: "v-2", name: "Kevin Lin", street: "112 Brentford" },
-  { id: "v-3", name: "Becky Larson", street: "221 Wiembley" },
-  { id: "v-4", name: "David Patel", street: "109 Brentford" }
-];
+// ================= INITIAL DATA =================
+// No pre-populated dishes (clean slate as requested)
+const DEFAULT_DISHES = [];
 
 // ================= STORAGE KEYS =================
 const STORAGE_KEYS = {
-  DISHES: "cooks_crossing_dishes_v2",
-  CORNHOLE: "cooks_crossing_cornhole_v2",
-  VOLLEYBALL: "cooks_crossing_volleyball_v2",
-  FIREBASE_CONFIG: "cooks_crossing_firebase_config_v2"
+  DISHES: "cooks_crossing_dishes_v3",
+  FIREBASE_CONFIG: "cooks_crossing_firebase_config_v3"
 };
 
 // ================= STATE MANAGEMENT =================
 let dishesState = [];
-let cornholeState = [];
-let volleyballState = [];
 let activeCategoryFilter = "all";
 let activeDietaryFilters = new Set();
 let searchQuery = "";
@@ -159,26 +38,12 @@ function loadData() {
     if (savedDishes) {
       dishesState = JSON.parse(savedDishes);
     } else {
-      dishesState = [...DEFAULT_DISHES];
+      dishesState = [];
       saveDishes();
     }
   } catch (e) {
     console.error("Error loading dishes from localStorage:", e);
-    dishesState = [...DEFAULT_DISHES];
-  }
-
-  try {
-    const savedCornhole = localStorage.getItem(STORAGE_KEYS.CORNHOLE);
-    cornholeState = savedCornhole ? JSON.parse(savedCornhole) : [...DEFAULT_CORNHOLE_TEAMS];
-  } catch (e) {
-    cornholeState = [...DEFAULT_CORNHOLE_TEAMS];
-  }
-
-  try {
-    const savedVolleyball = localStorage.getItem(STORAGE_KEYS.VOLLEYBALL);
-    volleyballState = savedVolleyball ? JSON.parse(savedVolleyball) : [...DEFAULT_VOLLEYBALL_PLAYERS];
-  } catch (e) {
-    volleyballState = [...DEFAULT_VOLLEYBALL_PLAYERS];
+    dishesState = [];
   }
 
   // Attempt Firebase Cloud connection if configured
@@ -196,18 +61,6 @@ function saveDishes() {
   if (firebaseDb) {
     syncToFirebase();
   }
-}
-
-function saveCornhole() {
-  try {
-    localStorage.setItem(STORAGE_KEYS.CORNHOLE, JSON.stringify(cornholeState));
-  } catch (e) {}
-}
-
-function saveVolleyball() {
-  try {
-    localStorage.setItem(STORAGE_KEYS.VOLLEYBALL, JSON.stringify(volleyballState));
-  } catch (e) {}
 }
 
 // ================= EVENT COUNTDOWN TIMER =================
@@ -251,13 +104,14 @@ function initCountdown() {
 function renderAll() {
   renderDishes();
   renderStats();
-  renderGames();
   lucide.createIcons();
 }
 
 function renderDishes() {
   const container = document.getElementById("dishes-list-container");
   const emptyState = document.getElementById("empty-dishes-state");
+  const emptyTitle = document.getElementById("empty-state-title");
+  const emptyDesc = document.getElementById("empty-state-desc");
   if (!container) return;
 
   // Filter dishes
@@ -281,9 +135,8 @@ function renderDishes() {
       const q = searchQuery.toLowerCase();
       const matchName = dish.name.toLowerCase().includes(q);
       const matchContrib = dish.contributor.toLowerCase().includes(q);
-      const matchStreet = dish.street ? dish.street.toLowerCase().includes(q) : false;
       const matchNotes = dish.notes ? dish.notes.toLowerCase().includes(q) : false;
-      if (!matchName && !matchContrib && !matchStreet && !matchNotes) {
+      if (!matchName && !matchContrib && !matchNotes) {
         return false;
       }
     }
@@ -299,9 +152,6 @@ function renderDishes() {
       return a.name.localeCompare(b.name);
     } else if (sortMode === "category") {
       return a.category.localeCompare(b.category);
-    } else if (sortMode === "servings") {
-      const parseServings = (s) => parseInt(s) || 10;
-      return parseServings(b.servings) - parseServings(a.servings);
     }
     return 0;
   });
@@ -309,13 +159,22 @@ function renderDishes() {
   // Render cards or empty state
   if (filtered.length === 0) {
     container.innerHTML = "";
-    if (emptyState) emptyState.classList.remove("hidden");
+    if (emptyState) {
+      emptyState.classList.remove("hidden");
+      if (dishesState.length === 0) {
+        if (emptyTitle) emptyTitle.textContent = "No side dishes added yet";
+        if (emptyDesc) emptyDesc.textContent = "Be the first neighbor to enter what you'll bring to the table!";
+      } else {
+        if (emptyTitle) emptyTitle.textContent = "No dishes match your filter";
+        if (emptyDesc) emptyDesc.textContent = "Try adjusting your search query or category filters.";
+      }
+    }
   } else {
     if (emptyState) emptyState.classList.add("hidden");
     container.innerHTML = filtered.map((dish) => createDishCardHtml(dish)).join("");
   }
 
-  // Update counts in category tabs
+  // Update counts in category tabs & badges
   updateCategoryCounts();
 }
 
@@ -328,17 +187,10 @@ function createDishCardHtml(dish) {
       if (tag === "Gluten-Free") colorClass = "bg-amber-50 text-amber-800 border-amber-200";
       if (tag === "Nut-Free") colorClass = "bg-blue-50 text-blue-800 border-blue-200";
       if (tag === "Needs Outlet") colorClass = "bg-purple-50 text-purple-800 border-purple-200";
-      if (tag === "Contains Meat") colorClass = "bg-terracotta-50 text-terracotta-800 border-terracotta-200";
 
       return `<span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-md border ${colorClass}">${tag}</span>`;
     })
     .join(" ");
-
-  const hostBadge = dish.isHostProvided
-    ? `<span class="inline-flex items-center gap-1 text-[11px] font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full border border-amber-300">
-         <i data-lucide="crown" class="w-3 h-3 text-amber-700"></i> Provided for All
-       </span>`
-    : "";
 
   return `
     <article class="dish-card bg-white rounded-2xl p-4 sm:p-5 border border-stone-200/90 shadow-sm relative group" data-dish-id="${dish.id}">
@@ -352,31 +204,18 @@ function createDishCardHtml(dish) {
               <span>${categoryMeta.emoji}</span>
               <span>${categoryMeta.label}</span>
             </span>
-            ${hostBadge}
-            <span class="text-xs font-semibold text-stone-500 bg-stone-100 px-2 py-0.5 rounded-lg">
-              ${dish.servings} servings
-            </span>
           </div>
 
           <h4 class="font-display font-extrabold text-lg sm:text-xl text-stone-900 leading-snug">
             ${escapeHtml(dish.name)}
           </h4>
 
-          <!-- Contributor & Address -->
+          <!-- Contributor -->
           <div class="flex items-center gap-2 text-xs font-medium text-stone-600 flex-wrap">
             <span class="font-bold text-stone-900 flex items-center gap-1">
               <i data-lucide="user" class="w-3.5 h-3.5 text-amber-600"></i>
               ${escapeHtml(dish.contributor)}
             </span>
-            ${
-              dish.street
-                ? `<span class="text-stone-300">•</span>
-                   <span class="text-stone-500 flex items-center gap-1">
-                     <i data-lucide="map-pin" class="w-3 h-3 text-stone-400"></i>
-                     ${escapeHtml(dish.street)}
-                   </span>`
-                : ""
-            }
           </div>
 
           <!-- Notes -->
@@ -399,7 +238,7 @@ function createDishCardHtml(dish) {
 
         </div>
 
-        <!-- Right: Actions (Cheer reaction & Delete) -->
+        <!-- Right: Actions (Cheer reaction only - users not allowed to delete) -->
         <div class="flex sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-100">
           
           <button 
@@ -412,19 +251,6 @@ function createDishCardHtml(dish) {
             <span>Can't wait!</span>
             <span class="bg-amber-200/80 text-amber-900 px-1.5 py-0.2 rounded-md font-extrabold text-[11px]">${dish.likes || 0}</span>
           </button>
-
-          ${
-            !dish.isHostProvided
-              ? `<button 
-                   type="button" 
-                   onclick="deleteDish('${dish.id}')"
-                   title="Remove this dish" 
-                   class="text-stone-400 hover:text-rose-600 text-xs p-1.5 rounded-lg hover:bg-rose-50 transition-colors"
-                 >
-                   <i data-lucide="trash-2" class="w-4 h-4"></i>
-                 </button>`
-              : ""
-          }
 
         </div>
 
@@ -507,81 +333,15 @@ function updateCategoryCounts() {
 
 function renderStats() {
   const totalDishesEl = document.getElementById("stat-total-dishes");
-  const totalServingsEl = document.getElementById("stat-total-servings");
   const dietaryDishesEl = document.getElementById("stat-dietary-dishes");
-  const totalPlayersEl = document.getElementById("stat-total-players");
 
   if (totalDishesEl) totalDishesEl.textContent = dishesState.length;
-
-  // Estimate total servings
-  let servings = 0;
-  dishesState.forEach((d) => {
-    if (d.servings === "8-10") servings += 9;
-    else if (d.servings === "12-15") servings += 14;
-    else if (d.servings === "16-20") servings += 18;
-    else if (d.servings === "20+") servings += 25;
-    else servings += 12;
-  });
-  if (totalServingsEl) totalServingsEl.textContent = `${servings}+`;
 
   // Count dietary dishes (Vegetarian or GF)
   const dietaryCount = dishesState.filter(
     (d) => d.dietary && (d.dietary.includes("Vegetarian") || d.dietary.includes("Gluten-Free"))
   ).length;
   if (dietaryDishesEl) dietaryDishesEl.textContent = dietaryCount;
-
-  // Games players count
-  const cornholePlayers = cornholeState.length * 2;
-  const volleyballPlayers = volleyballState.length;
-  if (totalPlayersEl) totalPlayersEl.textContent = cornholePlayers + volleyballPlayers;
-}
-
-function renderGames() {
-  // Render Cornhole
-  const cList = document.getElementById("cornhole-teams-list");
-  const cCount = document.getElementById("cornhole-count");
-  if (cCount) cCount.textContent = cornholeState.length;
-  if (cList) {
-    cList.innerHTML = cornholeState
-      .map(
-        (t) => `
-        <li class="flex items-center justify-between p-2 rounded-xl bg-white border border-stone-200">
-          <div class="flex items-center gap-2">
-            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-            <span class="font-bold text-stone-900">${escapeHtml(t.name)}</span>
-            ${t.street ? `<span class="text-stone-400">(${escapeHtml(t.street)})</span>` : ""}
-          </div>
-          <button onclick="removeCornholeTeam('${t.id}')" class="text-stone-300 hover:text-rose-500 p-1">
-            <i data-lucide="x" class="w-3.5 h-3.5"></i>
-          </button>
-        </li>
-      `
-      )
-      .join("");
-  }
-
-  // Render Volleyball
-  const vList = document.getElementById("volleyball-players-list");
-  const vCount = document.getElementById("volleyball-count");
-  if (vCount) vCount.textContent = volleyballState.length;
-  if (vList) {
-    vList.innerHTML = volleyballState
-      .map(
-        (p) => `
-        <li class="flex items-center justify-between p-2 rounded-xl bg-white border border-stone-200">
-          <div class="flex items-center gap-2">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            <span class="font-bold text-stone-900">${escapeHtml(p.name)}</span>
-            ${p.street ? `<span class="text-stone-400">(${escapeHtml(p.street)})</span>` : ""}
-          </div>
-          <button onclick="removeVolleyballPlayer('${p.id}')" class="text-stone-300 hover:text-rose-500 p-1">
-            <i data-lucide="x" class="w-3.5 h-3.5"></i>
-          </button>
-        </li>
-      `
-      )
-      .join("");
-  }
 }
 
 // ================= EVENT LISTENERS =================
@@ -590,58 +350,6 @@ function setupEventListeners() {
   const dishForm = document.getElementById("potluck-dish-form");
   if (dishForm) {
     dishForm.addEventListener("submit", handleAddDish);
-  }
-
-  // Cornhole Sign-up Form
-  const cornholeForm = document.getElementById("cornhole-signup-form");
-  if (cornholeForm) {
-    cornholeForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const nameInput = document.getElementById("cornhole-team-name");
-      const streetInput = document.getElementById("cornhole-street");
-      if (!nameInput || !nameInput.value.trim()) return;
-
-      const newTeam = {
-        id: "c-" + Date.now(),
-        name: nameInput.value.trim(),
-        street: streetInput ? streetInput.value.trim() : ""
-      };
-
-      cornholeState.push(newTeam);
-      saveCornhole();
-      renderGames();
-      renderStats();
-      nameInput.value = "";
-      if (streetInput) streetInput.value = "";
-      showToast("Cornhole team registered! See you on the boards!");
-      triggerCelebration();
-    });
-  }
-
-  // Volleyball Sign-up Form
-  const volleyballForm = document.getElementById("volleyball-signup-form");
-  if (volleyballForm) {
-    volleyballForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const nameInput = document.getElementById("volleyball-player-name");
-      const streetInput = document.getElementById("volleyball-street");
-      if (!nameInput || !nameInput.value.trim()) return;
-
-      const newPlayer = {
-        id: "v-" + Date.now(),
-        name: nameInput.value.trim(),
-        street: streetInput ? streetInput.value.trim() : ""
-      };
-
-      volleyballState.push(newPlayer);
-      saveVolleyball();
-      renderGames();
-      renderStats();
-      nameInput.value = "";
-      if (streetInput) streetInput.value = "";
-      showToast("You're signed up for volleyball! Get ready to bump, set, spike!");
-      triggerCelebration();
-    });
   }
 
   // Category Filter Pills
@@ -752,13 +460,13 @@ function setupEventListeners() {
   const closeSyncModal = document.getElementById("close-sync-modal");
   const dismissSyncModal = document.getElementById("dismiss-sync-modal");
 
-  const openModal = () => syncModal && syncModal.classList.remove("hidden");
-  const closeModal = () => syncModal && syncModal.classList.add("hidden");
+  window.openSyncModal = () => syncModal && syncModal.classList.remove("hidden");
+  window.closeSyncModal = () => syncModal && syncModal.classList.add("hidden");
 
-  if (syncBtn) syncBtn.addEventListener("click", openModal);
-  if (footerSyncBtn) footerSyncBtn.addEventListener("click", openModal);
-  if (closeSyncModal) closeSyncModal.addEventListener("click", closeModal);
-  if (dismissSyncModal) dismissSyncModal.addEventListener("click", closeModal);
+  if (syncBtn) syncBtn.addEventListener("click", window.openSyncModal);
+  if (footerSyncBtn) footerSyncBtn.addEventListener("click", window.openSyncModal);
+  if (closeSyncModal) closeSyncModal.addEventListener("click", window.closeSyncModal);
+  if (dismissSyncModal) dismissSyncModal.addEventListener("click", window.closeSyncModal);
 
   // Copy share URL button
   const copyShareBtn = document.getElementById("copy-share-url-btn");
@@ -771,23 +479,6 @@ function setupEventListeners() {
   if (saveFirebaseBtn) {
     saveFirebaseBtn.addEventListener("click", saveFirebaseConfig);
   }
-
-  // Reset Demo Data Button
-  const resetDataBtn = document.getElementById("reset-data-btn");
-  if (resetDataBtn) {
-    resetDataBtn.addEventListener("click", () => {
-      if (confirm("Reset to default neighborhood dishes? Your entered items will be restored to the starting list.")) {
-        dishesState = [...DEFAULT_DISHES];
-        cornholeState = [...DEFAULT_CORNHOLE_TEAMS];
-        volleyballState = [...DEFAULT_VOLLEYBALL_PLAYERS];
-        saveDishes();
-        saveCornhole();
-        saveVolleyball();
-        renderAll();
-        showToast("Restored neighborhood demo dishes!");
-      }
-    });
-  }
 }
 
 // ================= FORM SUBMISSION =================
@@ -795,10 +486,8 @@ function handleAddDish(e) {
   e.preventDefault();
 
   const contributorName = document.getElementById("contributor-name").value.trim();
-  const contributorStreet = document.getElementById("contributor-street").value.trim();
   const dishName = document.getElementById("dish-name").value.trim();
   const dishCategory = document.getElementById("dish-category").value;
-  const dishServings = document.getElementById("dish-servings").value;
   const dishNotes = document.getElementById("dish-notes").value.trim();
 
   // Dietary tags
@@ -810,17 +499,14 @@ function handleAddDish(e) {
     return;
   }
 
-  // Create new dish object
+  // Create new dish object (no servings size, no delete allowed)
   const newDish = {
     id: "dish-" + Date.now(),
     name: dishName,
     contributor: contributorName,
-    street: contributorStreet,
     category: dishCategory,
-    servings: dishServings,
     dietary: dietaryTags,
     notes: dishNotes,
-    isHostProvided: false,
     likes: 1,
     createdAt: Date.now()
   };
@@ -933,7 +619,7 @@ window.addEventListener("resize", () => {
   }
 });
 
-// ================= ACTIONS: LIKE & DELETE =================
+// ================= ACTIONS: LIKE (UPVOTE) =================
 window.likeDish = function (id) {
   const dish = dishesState.find((d) => d.id === id);
   if (dish) {
@@ -951,32 +637,6 @@ window.likeDish = function (id) {
       });
     }
   }
-};
-
-window.deleteDish = function (id) {
-  const dish = dishesState.find((d) => d.id === id);
-  if (!dish) return;
-
-  if (confirm(`Are you sure you want to remove "${dish.name}" from the potluck?`)) {
-    dishesState = dishesState.filter((d) => d.id !== id);
-    saveDishes();
-    renderAll();
-    showToast(`Removed "${dish.name}"`);
-  }
-};
-
-window.removeCornholeTeam = function (id) {
-  cornholeState = cornholeState.filter((t) => t.id !== id);
-  saveCornhole();
-  renderGames();
-  renderStats();
-};
-
-window.removeVolleyballPlayer = function (id) {
-  volleyballState = volleyballState.filter((p) => p.id !== id);
-  saveVolleyball();
-  renderGames();
-  renderStats();
 };
 
 // ================= CONFETTI & NOTIFICATIONS =================
@@ -1014,17 +674,15 @@ function showToast(message) {
 // ================= EXPORT & SHARING =================
 function exportPotluckToCsv() {
   if (dishesState.length === 0) {
-    alert("No dishes to export yet!");
+    alert("No dishes entered yet to export!");
     return;
   }
 
-  const headers = ["Dish Name", "Contributor", "Street / House", "Category", "Servings", "Dietary Info", "Notes"];
+  const headers = ["Dish Name", "Contributor", "Category", "Dietary Info", "Notes"];
   const rows = dishesState.map((d) => [
     `"${(d.name || "").replace(/"/g, '""')}"`,
     `"${(d.contributor || "").replace(/"/g, '""')}"`,
-    `"${(d.street || "").replace(/"/g, '""')}"`,
     `"${(d.category || "").replace(/"/g, '""')}"`,
-    `"${(d.servings || "").replace(/"/g, '""')}"`,
     `"${(d.dietary || []).join(", ").replace(/"/g, '""')}"`,
     `"${(d.notes || "").replace(/"/g, '""')}"`
   ]);
@@ -1043,8 +701,7 @@ function exportPotluckToCsv() {
 
 function copyShareableUrl() {
   try {
-    // Encode current dishes into URL query string for effortless sharing across neighbors
-    const cleanDishes = dishesState.slice(0, 30); // keep reasonable URL length
+    const cleanDishes = dishesState.slice(0, 30);
     const jsonStr = JSON.stringify(cleanDishes);
     const encoded = encodeURIComponent(btoa(jsonStr));
     const shareUrl = `${window.location.origin}${window.location.pathname}?party_data=${encoded}`;
@@ -1066,7 +723,6 @@ function checkUrlParamsForData() {
       const decoded = atob(decodeURIComponent(partyData));
       const parsed = JSON.parse(decoded);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        // Merge without losing existing user entries
         const existingIds = new Set(dishesState.map((d) => d.id));
         parsed.forEach((item) => {
           if (!existingIds.has(item.id)) {
@@ -1094,13 +750,11 @@ function initFirebaseIfConfigured() {
     }
     firebaseDb = firebase.firestore();
 
-    // Update status indicator
     const label = document.getElementById("sync-status-label");
     const icon = document.getElementById("sync-status-icon");
     if (label) label.textContent = "Live Cloud Sync";
     if (icon) icon.className = "w-4 h-4 text-emerald-500 animate-pulse";
 
-    // Listen to real-time updates from cloud
     firebaseDb.collection("cooks_crossing_potluck").doc("current_event")
       .onSnapshot((doc) => {
         if (doc.exists) {
