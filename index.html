@@ -77,7 +77,7 @@
   <!-- Canvas Confetti for celebrations -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
-  <link rel="stylesheet" href="styles.css?v=20261003_v4" />
+  <link rel="stylesheet" href="styles.css?v=20261003_v5" />
 </head>
 <body class="bg-stone-50 text-stone-800 font-sans antialiased selection:bg-amber-200 selection:text-amber-900 min-h-screen flex flex-col">
 
@@ -93,55 +93,6 @@
       </button>
     </div>
   </div>
-
-  <!-- ================= NAVIGATION BAR ================= -->
-  <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-stone-200/80 transition-all duration-200 shadow-sm" id="navbar">
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 sm:h-16 md:h-20 flex items-center justify-between">
-      
-      <!-- Brand Logo / Title -->
-      <a href="#" class="flex items-center gap-2.5 sm:gap-3 group">
-        <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-amber-500 to-terracotta-600 flex items-center justify-center text-white shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform duration-200 shrink-0">
-          <i data-lucide="utensils" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-        </div>
-        <div>
-          <span class="font-display font-extrabold text-base sm:text-lg md:text-xl text-stone-900 tracking-tight leading-tight block">
-            Cooks Crossing
-          </span>
-          <span class="text-[10px] sm:text-xs text-amber-700 font-bold tracking-wide uppercase flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            Block Party & Pig Pickin'
-          </span>
-        </div>
-      </a>
-
-      <!-- Desktop Nav Links -->
-      <div class="hidden md:flex items-center gap-6 text-sm font-semibold text-stone-600">
-        <a href="#event-details" class="hover:text-amber-700 transition-colors">Event Info</a>
-        <a href="#potluck-main" onclick="mobileSwitchTab('dishes')" class="hover:text-amber-700 transition-colors flex items-center gap-1.5">
-          <span>Potluck Dishes</span>
-          <span id="nav-dish-count-badge" class="bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full font-bold">0</span>
-        </a>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="flex items-center gap-2">
-        <button id="cloud-sync-modal-btn" type="button" title="Sync / Cloud Settings" class="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs font-semibold text-stone-700 bg-stone-100 hover:bg-stone-200 transition-all border border-stone-200">
-          <i data-lucide="cloud-check" id="sync-status-icon" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600"></i>
-          <span class="inline text-[11px] sm:text-xs font-semibold" id="sync-status-label">Live Synced</span>
-        </button>
-
-        <button onclick="window.print()" type="button" title="Print Potluck Sheet" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-stone-600 bg-stone-100 hover:bg-stone-200 transition-all border border-stone-200">
-          <i data-lucide="printer" class="w-4 h-4 text-stone-500"></i>
-          <span>Print</span>
-        </button>
-
-        <button onclick="mobileSwitchTab('form')" class="inline-flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-amber-600 to-terracotta-600 hover:from-amber-700 hover:to-terracotta-700 text-white font-bold text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2.5 rounded-xl shadow-md shadow-amber-600/25 transition-all">
-          <i data-lucide="plus-circle" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
-          <span>Add Dish</span>
-        </button>
-      </div>
-    </div>
-  </nav>
 
   <!-- ================= HERO SECTION (MOBILE PRIORITY) ================= -->
   <header class="relative bg-stone-900 text-white overflow-hidden hero-wrapper">
@@ -526,16 +477,19 @@
             
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 sm:mb-4">
               <div>
-                <div class="flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" id="sync-status-icon"></span>
                   <h3 class="font-display font-extrabold text-xl sm:text-2xl text-stone-900">What Others Have Added</h3>
+                  <button type="button" onclick="openSyncModal()" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 transition-colors" id="cloud-sync-modal-btn">
+                    <span id="sync-status-label">Live Synced</span>
+                  </button>
                 </div>
                 <p class="text-xs sm:text-sm text-stone-500 mt-0.5">
                   See what your neighbors are bringing to avoid duplicate dishes!
                 </p>
               </div>
 
-              <!-- Quick Search & Refresh Row -->
+              <!-- Quick Search & Actions Row -->
               <div class="flex items-center gap-2 w-full sm:w-auto">
                 <div class="relative flex-1 sm:w-64">
                   <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-stone-400">
@@ -560,6 +514,15 @@
                 >
                   <i data-lucide="rotate-cw" id="refresh-spinner-icon" class="w-4 h-4 text-stone-600"></i>
                   <span class="hidden xs:inline">Refresh</span>
+                </button>
+                <button 
+                  type="button" 
+                  onclick="window.print()" 
+                  title="Print Potluck Sheet" 
+                  class="hidden sm:inline-flex items-center gap-1.5 px-3 py-2.5 text-xs font-bold text-stone-700 bg-stone-100 hover:bg-stone-200 border border-stone-300 rounded-xl transition-all active:scale-95 shrink-0 shadow-sm"
+                >
+                  <i data-lucide="printer" class="w-4 h-4 text-stone-600"></i>
+                  <span>Print</span>
                 </button>
               </div>
             </div>
@@ -645,79 +608,6 @@
     </div>
   </main>
 
-  <!-- ================= HIGHLIGHTS & KEY DETAILS ================= -->
-  <section id="event-details" class="py-10 sm:py-14 bg-white border-t border-stone-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1 sm:mb-2">Block Party Lineup</h2>
-        <h3 class="font-display text-2xl sm:text-3xl font-extrabold text-stone-900">What Makes Cooks Crossing Great</h3>
-        <p class="text-xs sm:text-sm text-stone-600 mt-2">Bring your family, your lawn chairs, and an appetite. Here's what's lined up:</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-        
-        <!-- Card 1: James Strickland Pig Pickin' -->
-        <div class="bg-gradient-to-b from-amber-50/60 to-white border border-amber-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-sm">
-          <div class="w-11 h-11 rounded-2xl bg-amber-500 text-white flex items-center justify-center font-bold text-xl mb-3 shadow-md shadow-amber-500/20">
-            🍖
-          </div>
-          <div class="inline-block bg-amber-100 text-amber-900 text-xs font-bold px-2.5 py-0.5 rounded-full mb-2">
-            Main Feast Provided
-          </div>
-          <h4 class="font-display font-bold text-lg sm:text-xl text-stone-900 mb-1.5">James Strickland's Pig Pickin'</h4>
-          <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
-            James is cooking a whole pig for everyone! Sliced pulled pork, buns, and barbecue sauces will be ready starting around 5:00 PM.
-          </p>
-          <div class="mt-4 pt-3 border-t border-amber-100 flex items-center gap-2 text-xs font-semibold text-amber-800">
-            <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
-            <span>Provided for all Cooks Crossing neighbors</span>
-          </div>
-        </div>
-
-        <!-- Card 2: Friendly Lawn Games (Cornhole & Volleyball) -->
-        <div class="bg-gradient-to-b from-emerald-50/60 to-white border border-emerald-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-sm">
-          <div class="w-11 h-11 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xl mb-3 shadow-md shadow-emerald-600/20">
-            🎯
-          </div>
-          <div class="inline-block bg-emerald-100 text-emerald-900 text-xs font-bold px-2.5 py-0.5 rounded-full mb-2">
-            Friendly Lawn Games
-          </div>
-          <h4 class="font-display font-bold text-lg sm:text-xl text-stone-900 mb-1.5">Cornhole & Volleyball</h4>
-          <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
-            Games will be set up across the field for all ages. Enjoy friendly games of cornhole, jump into pickup grass volleyball, or bring your favorite lawn games to share! No registration needed—just come play.
-          </p>
-          <div class="mt-4 pt-3 border-t border-emerald-100 flex items-center gap-2 text-xs font-semibold text-emerald-800">
-            <i data-lucide="smile" class="w-4 h-4 text-emerald-600"></i>
-            <span>Open casual play all afternoon</span>
-          </div>
-        </div>
-
-        <!-- Card 3: Potluck Side Dishes -->
-        <div class="bg-gradient-to-b from-terracotta-50/60 to-white border border-terracotta-200/80 rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-sm">
-          <div class="w-11 h-11 rounded-2xl bg-terracotta-600 text-white flex items-center justify-center font-bold text-xl mb-3 shadow-md shadow-terracotta-600/20">
-            🥗
-          </div>
-          <div class="inline-block bg-terracotta-100 text-terracotta-900 text-xs font-bold px-2.5 py-0.5 rounded-full mb-2">
-            Bring a Dish to Share
-          </div>
-          <h4 class="font-display font-bold text-lg sm:text-xl text-stone-900 mb-1.5">Community Potluck Sides</h4>
-          <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">
-            Every family is asked to bring their favorite side dish, salad, baked mac & cheese, cornbread, appetizer, or sweet dessert. Sign up above so we avoid duplicate dishes!
-          </p>
-          <div class="mt-4 pt-3 border-t border-terracotta-100 flex items-center gap-2 text-xs font-semibold text-terracotta-800">
-            <button onclick="mobileSwitchTab('form')" class="hover:underline flex items-center gap-1 font-bold">
-              <span>Enter your dish</span>
-              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
   <!-- ================= FOOTER ================= -->
   <footer class="bg-stone-900 text-stone-300 py-8 sm:py-10 border-t border-stone-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -785,15 +675,16 @@
       <span>Add Dish</span>
     </button>
 
-    <!-- Details Tab -->
-    <a 
-      href="#event-details" 
+    <!-- Refresh Tab -->
+    <button 
+      type="button" 
+      onclick="refreshDishesNow()" 
       class="flex flex-col items-center justify-center gap-1 py-1 px-3 text-stone-600 hover:text-amber-700 transition-colors"
-      id="dock-btn-info"
+      id="dock-btn-refresh"
     >
-      <i data-lucide="map-pin" class="w-5 h-5 text-stone-500"></i>
-      <span class="text-[10px] font-bold">Details</span>
-    </a>
+      <i data-lucide="rotate-cw" class="w-5 h-5 text-stone-500"></i>
+      <span class="text-[10px] font-bold">Refresh</span>
+    </button>
 
     <!-- Sync Tab -->
     <button 
@@ -908,9 +799,9 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
   <!-- Central Cloud Config -->
-  <script src="config.js?v=20261003_v4"></script>
+  <script src="config.js?v=20261003_v5"></script>
   <!-- Main JavaScript Logic -->
-  <script src="app.js?v=20261003_v4"></script>
+  <script src="app.js?v=20261003_v5"></script>
 
   <script>
     // Initialize Lucide icons on load
