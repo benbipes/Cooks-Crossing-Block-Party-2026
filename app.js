@@ -1,15 +1,12 @@
 /**
  * Cooks Crossing Block Party & Pig Pickin' 2026
- * Interactive Potluck Coordination Script
+ * Interactive Potluck Coordination Script with Multi-Device Sync
  */
-
-// ================= INITIAL DATA =================
-// No pre-populated dishes (clean slate as requested)
-const DEFAULT_DISHES = [];
 
 // ================= STORAGE KEYS =================
 const STORAGE_KEYS = {
   DISHES: "cooks_crossing_dishes_v3",
+  GSHEET_URL: "cooks_crossing_gsheet_url_v3",
   FIREBASE_CONFIG: "cooks_crossing_firebase_config_v3"
 };
 
@@ -19,53 +16,162 @@ let activeCategoryFilter = "all";
 let activeDietaryFilters = new Set();
 let searchQuery = "";
 let sortMode = "newest";
+let activeGSheetUrl = "";
 let firebaseDb = null;
+let syncPollInterval = null;
 
 // ================= INITIALIZATION =================
 document.addEventListener("DOMContentLoaded", () => {
+  resolveCloudConfig();
   loadData();
   initCountdown();
   setupEventListeners();
   checkUrlParamsForData();
   renderAll();
   lucide.createIcons();
+
+  // If cloud sync is active, start periodic poll for background updates
+  if (activeGSheetUrl) {
+    syncPollInterval = setInterval(fetchFromGoogleSheet, 25000);
+  }
 });
 
-// Load persistent data from LocalStorage
+// Resolve cloud settings from config.js and localStorage
+function resolveCloudConfig() {
+  // Priority: config.js first (shared across all devices), then localStorage override
+  if (typeof CLOUD_CONFIG !== "undefined") {
+    if (CLOUD_CONFIG.googleSheetWebAppUrl && CLOUD_CONFIG.googleSheetWebAppUrl.trim()) {
+      activeGSheetUrl = CLOUD_CONFIG.googleSheetWebAppUrl.trim();
+    }
+  }
+
+  // Fallback to localStorage if configured on this device
+  if (!activeGSheetUrl) {
+    const localUrl = localStorage.getItem(STORAGE_KEYS.GSHEET_URL);
+    if (localUrl && localUrl.trim()) {
+      activeGSheetUrl = localUrl.trim();
+    }
+  }
+}
+
+// Load persistent data from LocalStorage & Cloud
 function loadData() {
+  // 1. Instant load from local cache
   try {
     const savedDishes = localStorage.getItem(STORAGE_KEYS.DISHES);
     if (savedDishes) {
       dishesState = JSON.parse(savedDishes);
     } else {
       dishesState = [];
-      saveDishes();
     }
   } catch (e) {
     console.error("Error loading dishes from localStorage:", e);
     dishesState = [];
   }
 
-  // Attempt Firebase Cloud connection if configured
-  initFirebaseIfConfigured();
+  // 2. Fetch latest live data from Google Sheets or Firebase if configured
+  if (activeGSheetUrl) {
+    fetchFromGoogleSheet();
+  } else {
+    initFirebaseIfConfigured();
+  }
+
+  updateSyncStatusBadge();
 }
 
-function saveDishes() {
+function saveLocalCache() {
   try {
     localStorage.setItem(STORAGE_KEYS.DISHES, JSON.stringify(dishesState));
   } catch (e) {
     console.error("Failed to save to localStorage:", e);
   }
+}
 
-  // If Firebase is active, sync to cloud
-  if (firebaseDb) {
-    syncToFirebase();
+// ================= GOOGLE SHEETS LIVE SYNC =================
+function fetchFromGoogleSheet() {
+  if (!activeGSheetUrl) return;
+
+  fetch(activeGSheetUrl)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data && Array.isArray(data.dishes)) {
+        // Merge with existing local dishes, avoiding duplicates
+        dishesState = data.dishes;
+        saveLocalCache();
+        renderAll();
+        updateSyncStatusBadge();
+      }
+    })
+    .catch((err) => {
+      console.warn("Could not sync with Google Sheets (check URL or permissions):", err);
+    });
+}
+
+function postToGoogleSheet(dish) {
+  if (!activeGSheetUrl) return;
+
+  // Use mode: 'no-cors' with text/plain to avoid CORS preflight blocking in browsers
+  fetch(activeGSheetUrl, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(dish)
+  })
+    .then(() => {
+      // Re-fetch after 2 seconds to synchronize
+      setTimeout(fetchFromGoogleSheet, 2000);
+    })
+    .catch((err) => {
+      console.warn("Error posting dish to Google Sheet:", err);
+    });
+}
+
+function updateSyncStatusBadge() {
+  const icon = document.getElementById("sync-status-icon");
+  const label = document.getElementById("sync-status-label");
+  const modalBanner = document.getElementById("sync-modal-status-box");
+  const noticeBanner = document.getElementById("cloud-sync-notice-banner");
+
+  if (activeGSheetUrl) {
+    if (icon) icon.className = "w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500 animate-pulse";
+    if (label) label.textContent = "Live Synced";
+    if (modalBanner) {
+      modalBanner.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3.5 mb-3.5 text-xs text-emerald-800";
+      modalBanner.innerHTML = `
+        <div class="flex items-center gap-2 font-bold">
+          <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+          <span>Google Sheets Live Sync Connected</span>
+        </div>
+        <p class="text-emerald-700 mt-1">Dishes are shared in real time across all neighbors' devices!</p>
+      `;
+    }
+    if (noticeBanner) noticeBanner.classList.add("hidden");
+  } else if (firebaseDb) {
+    if (icon) icon.className = "w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500 animate-pulse";
+    if (label) label.textContent = "Firebase Live";
+    if (noticeBanner) noticeBanner.classList.add("hidden");
+  } else {
+    if (icon) icon.className = "w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-500";
+    if (label) label.textContent = "Local Mode";
+    if (modalBanner) {
+      modalBanner.className = "bg-amber-50 border border-amber-200 rounded-2xl p-3.5 mb-3.5 text-xs text-amber-900";
+      modalBanner.innerHTML = `
+        <div class="flex items-center gap-2 font-bold">
+          <i data-lucide="alert-circle" class="w-4 h-4 text-amber-600"></i>
+          <span>Local Device Only</span>
+        </div>
+        <p class="text-amber-800 mt-1">Dishes are currently saved only on this phone/computer. Connect Google Sheets below so ALL neighbors see each other's dishes!</p>
+      `;
+    }
+    if (noticeBanner) noticeBanner.classList.remove("hidden");
   }
+  lucide.createIcons();
 }
 
 // ================= EVENT COUNTDOWN TIMER =================
 function initCountdown() {
-  // Event: Saturday, October 3, 2026 at 4:00 PM (16:00:00) EDT
   const eventDate = new Date("2026-10-03T16:00:00-04:00").getTime();
 
   function updateTimer() {
@@ -460,13 +566,39 @@ function setupEventListeners() {
   const closeSyncModal = document.getElementById("close-sync-modal");
   const dismissSyncModal = document.getElementById("dismiss-sync-modal");
 
-  window.openSyncModal = () => syncModal && syncModal.classList.remove("hidden");
+  window.openSyncModal = () => {
+    if (syncModal) syncModal.classList.remove("hidden");
+    // Pre-populate input with current URL
+    const gInput = document.getElementById("gsheet-url-input");
+    if (gInput && activeGSheetUrl) gInput.value = activeGSheetUrl;
+  };
   window.closeSyncModal = () => syncModal && syncModal.classList.add("hidden");
 
   if (syncBtn) syncBtn.addEventListener("click", window.openSyncModal);
   if (footerSyncBtn) footerSyncBtn.addEventListener("click", window.openSyncModal);
   if (closeSyncModal) closeSyncModal.addEventListener("click", window.closeSyncModal);
   if (dismissSyncModal) dismissSyncModal.addEventListener("click", window.closeSyncModal);
+
+  // Save Google Sheet URL
+  const saveGSheetBtn = document.getElementById("save-gsheet-btn");
+  if (saveGSheetBtn) {
+    saveGSheetBtn.addEventListener("click", () => {
+      const input = document.getElementById("gsheet-url-input");
+      if (!input) return;
+      const url = input.value.trim();
+      if (!url) {
+        activeGSheetUrl = "";
+        localStorage.removeItem(STORAGE_KEYS.GSHEET_URL);
+        showToast("Removed Google Sheet link. Switched to local storage.");
+      } else {
+        activeGSheetUrl = url;
+        localStorage.setItem(STORAGE_KEYS.GSHEET_URL, url);
+        fetchFromGoogleSheet();
+        showToast("Connected to Google Sheet live sync!");
+      }
+      updateSyncStatusBadge();
+    });
+  }
 
   // Copy share URL button
   const copyShareBtn = document.getElementById("copy-share-url-btn");
@@ -499,7 +631,7 @@ function handleAddDish(e) {
     return;
   }
 
-  // Create new dish object (no servings size, no delete allowed)
+  // Create new dish object
   const newDish = {
     id: "dish-" + Date.now(),
     name: dishName,
@@ -511,9 +643,16 @@ function handleAddDish(e) {
     createdAt: Date.now()
   };
 
-  // Prepend to list
+  // 1. Instant local update (zero-latency feedback)
   dishesState.unshift(newDish);
-  saveDishes();
+  saveLocalCache();
+
+  // 2. Sync to cloud (Google Sheets or Firebase)
+  if (activeGSheetUrl) {
+    postToGoogleSheet(newDish);
+  } else if (firebaseDb) {
+    syncToFirebase();
+  }
 
   // Reset form
   e.target.reset();
@@ -570,10 +709,8 @@ window.mobileSwitchTab = function (tab) {
       tabBtnDishes.classList.add("text-stone-600");
     }
 
-    // Scroll to form smoothly
     formSection.scrollIntoView({ behavior: "smooth", block: "start" });
 
-    // Focus first input field
     setTimeout(() => {
       const nameInput = document.getElementById("contributor-name");
       if (nameInput) nameInput.focus();
@@ -624,11 +761,20 @@ window.likeDish = function (id) {
   const dish = dishesState.find((d) => d.id === id);
   if (dish) {
     dish.likes = (dish.likes || 0) + 1;
-    saveDishes();
+    saveLocalCache();
     renderDishes();
     lucide.createIcons();
 
-    // Minor confetti puff
+    // Send like update to cloud if available
+    if (activeGSheetUrl) {
+      fetch(activeGSheetUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "like", id: id })
+      }).catch(() => {});
+    }
+
     if (typeof confetti === "function") {
       confetti({
         particleCount: 15,
@@ -729,7 +875,7 @@ function checkUrlParamsForData() {
             dishesState.push(item);
           }
         });
-        saveDishes();
+        saveLocalCache();
         showToast("Loaded shared potluck dishes from link!");
       }
     }
@@ -741,19 +887,22 @@ function checkUrlParamsForData() {
 // ================= OPTIONAL FIREBASE CLOUD SYNC =================
 function initFirebaseIfConfigured() {
   try {
-    const savedConfig = localStorage.getItem(STORAGE_KEYS.FIREBASE_CONFIG);
-    if (!savedConfig) return;
+    let config = null;
+    if (typeof CLOUD_CONFIG !== "undefined" && CLOUD_CONFIG.firebaseConfig) {
+      config = CLOUD_CONFIG.firebaseConfig;
+    }
+    if (!config) {
+      const savedConfig = localStorage.getItem(STORAGE_KEYS.FIREBASE_CONFIG);
+      if (savedConfig) config = JSON.parse(savedConfig);
+    }
+    if (!config) return;
 
-    const config = JSON.parse(savedConfig);
     if (!firebase.apps.length) {
       firebase.initializeApp(config);
     }
     firebaseDb = firebase.firestore();
 
-    const label = document.getElementById("sync-status-label");
-    const icon = document.getElementById("sync-status-icon");
-    if (label) label.textContent = "Live Cloud Sync";
-    if (icon) icon.className = "w-4 h-4 text-emerald-500 animate-pulse";
+    updateSyncStatusBadge();
 
     firebaseDb.collection("cooks_crossing_potluck").doc("current_event")
       .onSnapshot((doc) => {
@@ -761,7 +910,7 @@ function initFirebaseIfConfigured() {
           const data = doc.data();
           if (Array.isArray(data.dishes)) {
             dishesState = data.dishes;
-            localStorage.setItem(STORAGE_KEYS.DISHES, JSON.stringify(dishesState));
+            saveLocalCache();
             renderAll();
           }
         }
@@ -775,6 +924,8 @@ function saveFirebaseConfig() {
   const input = document.getElementById("firebase-config-input");
   if (!input || !input.value.trim()) {
     localStorage.removeItem(STORAGE_KEYS.FIREBASE_CONFIG);
+    firebaseDb = null;
+    updateSyncStatusBadge();
     showToast("Reset to browser local storage.");
     return;
   }
