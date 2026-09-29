@@ -16,6 +16,7 @@ let activeCategoryFilter = "all";
 let activeDietaryFilters = new Set();
 let searchQuery = "";
 let sortMode = "newest";
+const DEFAULT_GSHEET_URL = "https://script.google.com/macros/s/AKfycbw-iVy_roU_4I9zYx6iXaA5Jt2_w0cc1voAtxoJNm_pNnDscTGIOO_yq7gMVqIWXiO0/exec";
 let activeGSheetUrl = "";
 let firebaseDb = null;
 let syncPollInterval = null;
@@ -36,21 +37,26 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-// Resolve cloud settings from config.js and localStorage
+// Resolve cloud settings from config.js, localStorage, or default
 function resolveCloudConfig() {
-  // Priority: config.js first (shared across all devices), then localStorage override
+  // 1. Priority: config.js first
   if (typeof CLOUD_CONFIG !== "undefined") {
     if (CLOUD_CONFIG.googleSheetWebAppUrl && CLOUD_CONFIG.googleSheetWebAppUrl.trim()) {
       activeGSheetUrl = CLOUD_CONFIG.googleSheetWebAppUrl.trim();
     }
   }
 
-  // Fallback to localStorage if configured on this device
+  // 2. Fallback to localStorage override if configured
   if (!activeGSheetUrl) {
     const localUrl = localStorage.getItem(STORAGE_KEYS.GSHEET_URL);
     if (localUrl && localUrl.trim()) {
       activeGSheetUrl = localUrl.trim();
     }
+  }
+
+  // 3. Built-in live Google Sheets URL (ensures all devices connect immediately)
+  if (!activeGSheetUrl && DEFAULT_GSHEET_URL) {
+    activeGSheetUrl = DEFAULT_GSHEET_URL;
   }
 }
 
@@ -91,12 +97,33 @@ function saveLocalCache() {
 function fetchFromGoogleSheet() {
   if (!activeGSheetUrl) return;
 
-  fetch(activeGSheetUrl)
+  const sep = activeGSheetUrl.includes("?") ? "&" : "?";
+  const urlWithCacheBust = `${activeGSheetUrl}${sep}_t=${Date.now()}`;
+
+  fetch(urlWithCacheBust)
     .then((res) => res.json())
     .then((data) => {
       if (data && Array.isArray(data.dishes)) {
-        // Merge with existing local dishes, avoiding duplicates
-        dishesState = data.dishes;
+        // Find any dishes created locally that haven't appeared in the cloud yet
+        const cloudIds = new Set(data.dishes.map((d) => String(d.id || "")));
+        const cloudNames = new Set(data.dishes.map((d) => (d.name || "").toLowerCase().trim()));
+
+        const pendingDishes = dishesState.filter((localDish) => {
+          const idMatch = localDish.id && cloudIds.has(String(localDish.id));
+          const nameMatch = localDish.name && cloudNames.has((localDish.name || "").toLowerCase().trim());
+          return !idMatch && !nameMatch;
+        });
+
+        // Auto-upload any pending dishes to the cloud right now!
+        if (pendingDishes.length > 0) {
+          pendingDishes.forEach((dish) => {
+            postToGoogleSheet(dish);
+          });
+        }
+
+        // Keep pending local dishes visible at top, combined with confirmed cloud dishes
+        const combined = [...pendingDishes, ...data.dishes];
+        dishesState = deduplicateDishes(combined);
         saveLocalCache();
         renderAll();
         updateSyncStatusBadge();
@@ -107,25 +134,67 @@ function fetchFromGoogleSheet() {
     });
 }
 
+function deduplicateDishes(dishes) {
+  const seen = new Set();
+  const deduped = [];
+  for (const dish of dishes) {
+    const key = (dish.id && !String(dish.id).startsWith("test-dish"))
+      ? `id:${dish.id}`
+      : `name:${(dish.name || "").trim().toLowerCase()}_${(dish.contributor || "").trim().toLowerCase()}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      deduped.push(dish);
+    }
+  }
+  return deduped;
+}
+
+window.refreshDishesNow = function () {
+  const spinner = document.getElementById("refresh-spinner-icon");
+  if (spinner) spinner.classList.add("animate-spin");
+  fetchFromGoogleSheet();
+  showToast("Checking for new dishes...");
+  setTimeout(() => {
+    if (spinner) spinner.classList.remove("animate-spin");
+  }, 1200);
+};
+
 function postToGoogleSheet(dish) {
   if (!activeGSheetUrl) return;
 
   // Use mode: 'no-cors' with text/plain to avoid CORS preflight blocking in browsers
-  fetch(activeGSheetUrl, {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "text/plain;charset=utf-8"
-    },
-    body: JSON.stringify(dish)
-  })
-    .then(() => {
-      // Re-fetch after 2 seconds to synchronize
-      setTimeout(fetchFromGoogleSheet, 2000);
+  try {
+    fetch(activeGSheetUrl, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      body: JSON.stringify(dish)
     })
-    .catch((err) => {
-      console.warn("Error posting dish to Google Sheet:", err);
-    });
+      .then(() => {
+        // Re-fetch after 2.5s to confirm
+        setTimeout(fetchFromGoogleSheet, 2500);
+      })
+      .catch((err) => {
+        console.warn("Fetch post error, attempting beacon fallback:", err);
+        sendWithBeacon(dish);
+      });
+  } catch (err) {
+    console.warn("Direct fetch error, attempting beacon fallback:", err);
+    sendWithBeacon(dish);
+  }
+}
+
+function sendWithBeacon(dish) {
+  if (!activeGSheetUrl || !navigator.sendBeacon) return;
+  try {
+    const blob = new Blob([JSON.stringify(dish)], { type: "text/plain" });
+    navigator.sendBeacon(activeGSheetUrl, blob);
+    setTimeout(fetchFromGoogleSheet, 2500);
+  } catch (e) {
+    console.warn("sendBeacon fallback failed:", e);
+  }
 }
 
 function updateSyncStatusBadge() {
